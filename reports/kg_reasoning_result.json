@@ -1,0 +1,25 @@
+{
+  "intent": "legal_research",
+  "concepts": [
+    "consent",
+    "digital surveillance",
+    "due process",
+    "personal data",
+    "privacy",
+    "search and seizure",
+    "state action"
+  ],
+  "statutes": [
+    "Article 21"
+  ],
+  "likely_cases": [
+    "K.S. Puttaswamy v. Union of India"
+  ],
+  "rewritten_query": "Can police check my phone without permission? consent digital surveillance due process personal data privacy search and seizure state action Article 21 K.S. Puttaswamy v. Union of India",
+  "reasoning_trace": [
+    "Detected legally relevant surface terms from user query.",
+    "Mapped surface terms to legal concepts.",
+    "Linked legal concepts to constitutional/statutory provisions.",
+    "Linked concepts to likely precedent cases using authority/case metadata."
+  ]
+}

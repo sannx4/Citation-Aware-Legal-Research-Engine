@@ -1,0 +1,4 @@
+authority_rank,case_id,title,court,year,court_weight,bench_size,bench_strength_weight,pagerank_score,recency_score,positive_treatment_bonus,negative_treatment_penalty,authority_score,treatments
+1,CASE_001,K.S. Puttaswamy v. Union of India,Supreme Court of India,2017,1.0,2,0.55,0.0,0.8,0.0,0.0,0.53,
+2,CASE_002,Maneka Gandhi v. Union of India,Supreme Court of India,1978,1.0,2,0.55,0.0,0.4,0.0,0.0,0.47,
+3,CASE_003,A.K. Gopalan v. State of Madras,Supreme Court of India,1950,1.0,2,0.55,0.0,0.25,0.0,0.0,0.4475,

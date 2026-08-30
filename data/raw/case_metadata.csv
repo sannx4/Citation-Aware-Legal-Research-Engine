@@ -1,0 +1,4 @@
+case_id,file_name,title,court,year,source_type
+CASE_001,case_001.txt,K.S. Puttaswamy v. Union of India,Supreme Court of India,2017,text
+CASE_002,case_002.txt,Maneka Gandhi v. Union of India,Supreme Court of India,1978,text
+CASE_003,case_003.txt,A.K. Gopalan v. State of Madras,Supreme Court of India,1950,text

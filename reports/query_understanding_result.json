@@ -1,0 +1,16 @@
+{
+  "original_query": "Can police check my phone without permission?",
+  "intent": "legal_research",
+  "concepts": [
+    "digital surveillance",
+    "personal data",
+    "privacy"
+  ],
+  "statutes": [
+    "Article 21"
+  ],
+  "likely_cases": [
+    "K.S. Puttaswamy v. Union of India"
+  ],
+  "rewritten_query": "Can police check my phone without permission? digital surveillance personal data privacy Article 21 K.S. Puttaswamy v. Union of India"
+}

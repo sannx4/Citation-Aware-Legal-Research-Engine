@@ -1,0 +1,9 @@
+source_case_id,chunk_id,mention_type,original_mention,canonical_name,canonical_id,party_1,party_2,reference_number,confidence,resolution_status
+CASE_001,CASE_001_CHUNK_0001,CASE,K.S. Puttaswamy v. Union of India,ks puttaswamy v union of india,CASE_REF_ks_puttaswamy_v_union_of_india,ks puttaswamy,union of india,,0.95,RESOLVED
+CASE_002,CASE_002_CHUNK_0001,CASE,Maneka Gandhi v. Union of India,maneka gandhi v union of india,CASE_REF_maneka_gandhi_v_union_of_india,maneka gandhi,union of india,,0.85,RESOLVED
+CASE_003,CASE_003_CHUNK_0001,CASE,A.K. Gopalan v. State of Madras,ak gopalan v state of madras,CASE_REF_ak_gopalan_v_state_of_madras,ak gopalan,state of madras,,0.95,RESOLVED
+CASE_001,CASE_001_CHUNK_0001,ARTICLE,Article 21,article 21,ARTICLE_21,,,21,0.9,RESOLVED
+CASE_001,CASE_001_CHUNK_0001,ARTICLE,Article 21,article 21,ARTICLE_21,,,21,0.9,RESOLVED
+CASE_002,CASE_002_CHUNK_0001,ARTICLE,Article 21,article 21,ARTICLE_21,,,21,0.9,RESOLVED
+CASE_002,CASE_002_CHUNK_0001,ARTICLE,Article 21,article 21,ARTICLE_21,,,21,0.9,RESOLVED
+CASE_003,CASE_003_CHUNK_0001,ARTICLE,Article 21,article 21,ARTICLE_21,,,21,0.9,RESOLVED

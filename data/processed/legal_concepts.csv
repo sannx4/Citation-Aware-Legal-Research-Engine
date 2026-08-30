@@ -1,0 +1,26 @@
+source_type,source_id,chunk_id,title,court,year,role,concept,matched_keywords,confidence,link_reason
+CASE,CASE_001,CASE_001_ISSUES_0001,K.S. Puttaswamy v. Union of India,Supreme Court of India,2017,ISSUES,PRIVACY,privacy,0.7,keyword_match
+CASE,CASE_001,CASE_001_ISSUES_0002,K.S. Puttaswamy v. Union of India,Supreme Court of India,2017,ISSUES,PRIVACY,privacy; right to privacy,0.8,keyword_match
+CASE,CASE_001,CASE_001_ISSUES_0002,K.S. Puttaswamy v. Union of India,Supreme Court of India,2017,ISSUES,PERSONAL_LIBERTY,article 21,0.7,keyword_match
+CASE,CASE_001,CASE_001_FACTS_0001,K.S. Puttaswamy v. Union of India,Supreme Court of India,2017,FACTS,PRIVACY,privacy,0.7,keyword_match
+CASE,CASE_001,CASE_001_FACTS_0001,K.S. Puttaswamy v. Union of India,Supreme Court of India,2017,FACTS,PERSONAL_LIBERTY,personal liberty; life and personal liberty; liberty,0.9,keyword_match
+CASE,CASE_001,CASE_001_REASONING_0001,K.S. Puttaswamy v. Union of India,Supreme Court of India,2017,REASONING,PERSONAL_LIBERTY,liberty,0.7,keyword_match
+CASE,CASE_001,CASE_001_HOLDING_0001,K.S. Puttaswamy v. Union of India,Supreme Court of India,2017,HOLDING,PRIVACY,privacy; right to privacy,0.8,keyword_match
+CASE,CASE_001,CASE_001_HOLDING_0001,K.S. Puttaswamy v. Union of India,Supreme Court of India,2017,HOLDING,PERSONAL_LIBERTY,article 21,0.7,keyword_match
+CASE,CASE_002,CASE_002_ISSUES_0001,Maneka Gandhi v. Union of India,Supreme Court of India,1978,ISSUES,PERSONAL_LIBERTY,article 21,0.7,keyword_match
+CASE,CASE_002,CASE_002_ISSUES_0001,Maneka Gandhi v. Union of India,Supreme Court of India,1978,ISSUES,DUE_PROCESS,procedure established by law,0.7,keyword_match
+CASE,CASE_002,CASE_002_FACTS_0002,Maneka Gandhi v. Union of India,Supreme Court of India,1978,FACTS,PERSONAL_LIBERTY,personal liberty; liberty,0.8,keyword_match
+CASE,CASE_002,CASE_002_FACTS_0002,Maneka Gandhi v. Union of India,Supreme Court of India,1978,FACTS,ARBITRARINESS,arbitrary,0.7,keyword_match
+CASE,CASE_002,CASE_002_REASONING_0001,Maneka Gandhi v. Union of India,Supreme Court of India,1978,REASONING,PERSONAL_LIBERTY,article 21,0.7,keyword_match
+CASE,CASE_002,CASE_002_REASONING_0002,Maneka Gandhi v. Union of India,Supreme Court of India,1978,REASONING,PERSONAL_LIBERTY,personal liberty; liberty,0.8,keyword_match
+CASE,CASE_003,CASE_003_FACTS_0002,A.K. Gopalan v. State of Madras,Supreme Court of India,1950,FACTS,PERSONAL_LIBERTY,personal liberty; liberty,0.8,keyword_match
+CASE,CASE_003,CASE_003_REASONING_0001,A.K. Gopalan v. State of Madras,Supreme Court of India,1950,REASONING,PERSONAL_LIBERTY,article 21,0.7,keyword_match
+ARTICLE,ARTICLE_21,CASE_001_CHUNK_0001,,,,,PERSONAL_LIBERTY,Article 21,0.85,article_concept_mapping
+ARTICLE,ARTICLE_21,CASE_001_CHUNK_0001,,,,,PRIVACY,Article 21,0.85,article_concept_mapping
+ARTICLE,ARTICLE_21,CASE_001_CHUNK_0001,,,,,DUE_PROCESS,Article 21,0.85,article_concept_mapping
+ARTICLE,ARTICLE_21,CASE_002_CHUNK_0001,,,,,PERSONAL_LIBERTY,Article 21,0.85,article_concept_mapping
+ARTICLE,ARTICLE_21,CASE_002_CHUNK_0001,,,,,PRIVACY,Article 21,0.85,article_concept_mapping
+ARTICLE,ARTICLE_21,CASE_002_CHUNK_0001,,,,,DUE_PROCESS,Article 21,0.85,article_concept_mapping
+ARTICLE,ARTICLE_21,CASE_003_CHUNK_0001,,,,,PERSONAL_LIBERTY,Article 21,0.85,article_concept_mapping
+ARTICLE,ARTICLE_21,CASE_003_CHUNK_0001,,,,,PRIVACY,Article 21,0.85,article_concept_mapping
+ARTICLE,ARTICLE_21,CASE_003_CHUNK_0001,,,,,DUE_PROCESS,Article 21,0.85,article_concept_mapping

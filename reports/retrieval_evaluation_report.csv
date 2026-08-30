@@ -1,0 +1,25 @@
+system,query,relevant_case_ids,top_cases,recall_at_1,recall_at_3,recall_at_5,reciprocal_rank
+BM25,right to privacy,CASE_001,CASE_001;CASE_002;CASE_003,1.0,1.0,1.0,1.0
+BM25,Article 21 privacy,CASE_001,CASE_001;CASE_003;CASE_002,1.0,1.0,1.0,1.0
+BM25,personal liberty,CASE_002;CASE_003,CASE_001;CASE_003;CASE_002,0.0,1.0,1.0,0.5
+BM25,fair procedure under Article 21,CASE_002,CASE_002;CASE_003;CASE_001,1.0,1.0,1.0,1.0
+BM25,preventive detention fundamental rights,CASE_003,CASE_003;CASE_002;CASE_001,1.0,1.0,1.0,1.0
+BM25,passport impounding,CASE_002,CASE_002;CASE_001;CASE_003,1.0,1.0,1.0,1.0
+BM25,privacy fundamental right,CASE_001,CASE_001;CASE_002;CASE_003,1.0,1.0,1.0,1.0
+BM25,Article 21 liberty,CASE_001;CASE_002;CASE_003,CASE_003;CASE_001;CASE_002,0.3333,1.0,1.0,1.0
+FAISS,right to privacy,CASE_001,CASE_001;CASE_003;CASE_002,1.0,1.0,1.0,1.0
+FAISS,Article 21 privacy,CASE_001,CASE_001;CASE_002;CASE_003,1.0,1.0,1.0,1.0
+FAISS,personal liberty,CASE_002;CASE_003,CASE_001;CASE_002;CASE_003,0.0,1.0,1.0,0.5
+FAISS,fair procedure under Article 21,CASE_002,CASE_002;CASE_001;CASE_003,1.0,1.0,1.0,1.0
+FAISS,preventive detention fundamental rights,CASE_003,CASE_003;CASE_001;CASE_002,1.0,1.0,1.0,1.0
+FAISS,passport impounding,CASE_002,CASE_002;CASE_003;CASE_001,1.0,1.0,1.0,1.0
+FAISS,privacy fundamental right,CASE_001,CASE_001;CASE_003;CASE_002,1.0,1.0,1.0,1.0
+FAISS,Article 21 liberty,CASE_001;CASE_002;CASE_003,CASE_002;CASE_001;CASE_003,0.3333,1.0,1.0,1.0
+HYBRID,right to privacy,CASE_001,CASE_001;CASE_003;CASE_002,1.0,1.0,1.0,1.0
+HYBRID,Article 21 privacy,CASE_001,CASE_001;CASE_002;CASE_003,1.0,1.0,1.0,1.0
+HYBRID,personal liberty,CASE_002;CASE_003,CASE_001;CASE_003;CASE_002,0.0,1.0,1.0,0.5
+HYBRID,fair procedure under Article 21,CASE_002,CASE_002;CASE_001;CASE_003,1.0,1.0,1.0,1.0
+HYBRID,preventive detention fundamental rights,CASE_003,CASE_003;CASE_001;CASE_002,1.0,1.0,1.0,1.0
+HYBRID,passport impounding,CASE_002,CASE_002;CASE_003;CASE_001,1.0,1.0,1.0,1.0
+HYBRID,privacy fundamental right,CASE_001,CASE_001;CASE_003;CASE_002,1.0,1.0,1.0,1.0
+HYBRID,Article 21 liberty,CASE_001;CASE_002;CASE_003,CASE_001;CASE_002;CASE_003,0.3333,1.0,1.0,1.0

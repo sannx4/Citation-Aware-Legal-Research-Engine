@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding='utf-8'?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd">
+  <key id="d7" for="edge" attr.name="original_mention" attr.type="string" />
+  <key id="d6" for="edge" attr.name="chunk_id" attr.type="string" />
+  <key id="d5" for="edge" attr.name="confidence" attr.type="double" />
+  <key id="d4" for="edge" attr.name="edge_type" attr.type="string" />
+  <key id="d3" for="edge" attr.name="edge_id" attr.type="string" />
+  <key id="d2" for="node" attr.name="source" attr.type="string" />
+  <key id="d1" for="node" attr.name="label" attr.type="string" />
+  <key id="d0" for="node" attr.name="node_type" attr.type="string" />
+  <graph edgedefault="directed">
+    <node id="CASE_001">
+      <data key="d0">CASE</data>
+      <data key="d1">K.S. Puttaswamy v. Union of India</data>
+      <data key="d2">case_metadata</data>
+    </node>
+    <node id="CASE_002">
+      <data key="d0">CASE</data>
+      <data key="d1">Maneka Gandhi v. Union of India</data>
+      <data key="d2">case_metadata</data>
+    </node>
+    <node id="CASE_003">
+      <data key="d0">CASE</data>
+      <data key="d1">A.K. Gopalan v. State of Madras</data>
+      <data key="d2">case_metadata</data>
+    </node>
+    <node id="CASE_REF_ks_puttaswamy_v_union_of_india">
+      <data key="d0">CASE</data>
+      <data key="d1">ks puttaswamy v union of india</data>
+      <data key="d2">normalized_citations</data>
+    </node>
+    <node id="CASE_REF_maneka_gandhi_v_union_of_india">
+      <data key="d0">CASE</data>
+      <data key="d1">maneka gandhi v union of india</data>
+      <data key="d2">normalized_citations</data>
+    </node>
+    <node id="CASE_REF_ak_gopalan_v_state_of_madras">
+      <data key="d0">CASE</data>
+      <data key="d1">ak gopalan v state of madras</data>
+      <data key="d2">normalized_citations</data>
+    </node>
+    <node id="ARTICLE_21">
+      <data key="d0">ARTICLE</data>
+      <data key="d1">article 21</data>
+      <data key="d2">normalized_citations</data>
+    </node>
+    <edge source="CASE_001" target="CASE_REF_ks_puttaswamy_v_union_of_india">
+      <data key="d3">EDGE_00001</data>
+      <data key="d4">CITES_CASE</data>
+      <data key="d5">0.95</data>
+      <data key="d6">CASE_001_CHUNK_0001</data>
+      <data key="d7">K.S. Puttaswamy v. Union of India</data>
+    </edge>
+    <edge source="CASE_001" target="ARTICLE_21">
+      <data key="d3">EDGE_00005</data>
+      <data key="d4">MENTIONS_STATUTE</data>
+      <data key="d5">0.9</data>
+      <data key="d6">CASE_001_CHUNK_0001</data>
+      <data key="d7">Article 21</data>
+    </edge>
+    <edge source="CASE_002" target="CASE_REF_maneka_gandhi_v_union_of_india">
+      <data key="d3">EDGE_00002</data>
+      <data key="d4">CITES_CASE</data>
+      <data key="d5">0.85</data>
+      <data key="d6">CASE_002_CHUNK_0001</data>
+      <data key="d7">Maneka Gandhi v. Union of India</data>
+    </edge>
+    <edge source="CASE_002" target="ARTICLE_21">
+      <data key="d3">EDGE_00007</data>
+      <data key="d4">MENTIONS_STATUTE</data>
+      <data key="d5">0.9</data>
+      <data key="d6">CASE_002_CHUNK_0001</data>
+      <data key="d7">Article 21</data>
+    </edge>
+    <edge source="CASE_003" target="CASE_REF_ak_gopalan_v_state_of_madras">
+      <data key="d3">EDGE_00003</data>
+      <data key="d4">CITES_CASE</data>
+      <data key="d5">0.95</data>
+      <data key="d6">CASE_003_CHUNK_0001</data>
+      <data key="d7">A.K. Gopalan v. State of Madras</data>
+    </edge>
+    <edge source="CASE_003" target="ARTICLE_21">
+      <data key="d3">EDGE_00008</data>
+      <data key="d4">MENTIONS_STATUTE</data>
+      <data key="d5">0.9</data>
+      <data key="d6">CASE_003_CHUNK_0001</data>
+      <data key="d7">Article 21</data>
+    </edge>
+  </graph>
+</graphml>

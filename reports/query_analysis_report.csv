@@ -1,0 +1,5 @@
+original_query,intent,concepts,statutes,rewritten_query
+Can police check my phone without permission?,legal_research,personal liberty; privacy; surveillance,Article 21,Article 21 personal liberty consent permission privacy right to privacy personal data informational privacy digital surveillance phone data monitoring Can police check my phone without permission?
+Can government read my Whatsapp messages?,legal_research,privacy,Article 21,Article 21 privacy right to privacy personal data informational privacy Can government read my Whatsapp messages?
+Can government read my Whatsapp messages?,legal_research,digital surveillance; privacy,Article 21,Article 21 digital surveillance privacy right to privacy personal data informational privacy Can government read my Whatsapp messages?
+Can police inspect my laptop without a warrant?,legal_research,digital surveillance; search and seizure,Article 21,Article 21 digital surveillance search seizure warrant reasonable restriction Can police inspect my laptop without a warrant?

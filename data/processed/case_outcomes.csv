@@ -1,0 +1,5 @@
+case_id,title,court,year,outcome,outcome_confidence,outcome_evidence,holding_found,holding_confidence,holding_text
+CASE_001,K.S. Puttaswamy v. Union of India,Supreme Court of India,2017,UNKNOWN,0.0,,no,0.0,
+CASE_002,Maneka Gandhi v. Union of India,Supreme Court of India,1978,HELD,0.9,"Decision:
+The Court held that any law affecting personal liberty must be fair, just, and reasonable.",yes,0.9,"The Court held that any law affecting personal liberty must be fair, just, and reasonable."
+CASE_003,A.K. Gopalan v. State of Madras,Supreme Court of India,1950,UNKNOWN,0.0,,no,0.0,

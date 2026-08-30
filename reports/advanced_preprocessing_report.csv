@@ -1,0 +1,4 @@
+case_id,file_name,raw_length,advanced_cleaned_length,pii_masked_length,emails_masked,phones_masked,aadhaar_masked,pan_masked,pincode_masked,minor_names_masked
+CASE_001,case_001.txt,677,677,677,0,0,0,0,0,0
+CASE_002,case_002.txt,506,506,506,0,0,0,0,0,0
+CASE_003,case_003.txt,370,370,370,0,0,0,0,0,0

@@ -1,0 +1,5 @@
+role,chunk_count,avg_chunk_size,role_weight
+ISSUES,4,76.25,0.9
+FACTS,5,66.6,0.7
+REASONING,4,101.0,1.0
+HOLDING,2,60.0,1.0

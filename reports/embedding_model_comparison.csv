@@ -1,0 +1,3 @@
+model_name,model_id,backend,status,error,chunks_indexed,queries,recall_at_5,recall_at_10,mrr,ndcg_at_10,embedding_build_time_sec,avg_query_latency_ms,index_size_mb
+all-MiniLM-L6-v2,sentence-transformers/all-MiniLM-L6-v2,sentence_transformers,ok,,3,5,1.0,1.0,1.0,0.9912,14.2575,1102.3785,0.0044
+InLegalBERT,law-ai/InLegalBERT,hf_mean_pooling,ok,,3,5,1.0,1.0,1.0,1.0,3.6411,407.0242,0.0088

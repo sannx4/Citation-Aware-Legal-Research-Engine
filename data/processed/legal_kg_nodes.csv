@@ -1,0 +1,16 @@
+court,full_text,holding_text,label,node_id,node_type,polarity,source,statute_id,year
+Supreme Court of India,,,K.S. Puttaswamy v. Union of India,CASE_001,CASE,,case_metadata,,2017
+,,,Supreme Court of India,COURT_SUPREME_COURT_OF_INDIA,COURT,,case_metadata,,
+Supreme Court of India,,,Maneka Gandhi v. Union of India,CASE_002,CASE,,case_metadata,,1978
+Supreme Court of India,,,A.K. Gopalan v. State of Madras,CASE_003,CASE,,case_metadata,,1950
+,,,Constitution of India,ACT_CONSTITUTION_OF_INDIA,ACT,,statute_links,,
+,No person shall be deprived of his life or personal liberty except according to procedure established by law.,,Protection of life and personal liberty,ARTICLE_21,ARTICLE,,statute_links,CONSTITUTION_OF_INDIA,
+,,,PRIVACY,CONCEPT_PRIVACY,LEGAL_CONCEPT,,legal_concepts,,
+,,,PERSONAL_LIBERTY,CONCEPT_PERSONAL_LIBERTY,LEGAL_CONCEPT,,legal_concepts,,
+,,,DUE_PROCESS,CONCEPT_DUE_PROCESS,LEGAL_CONCEPT,,legal_concepts,,
+,,,ARBITRARINESS,CONCEPT_ARBITRARINESS,LEGAL_CONCEPT,,legal_concepts,,
+,,nan,Holding for CASE_001,HOLDING_CASE_001,HOLDING,,case_outcomes,,
+,,,HELD,OUTCOME_HELD,OUTCOME,,case_outcomes,,
+,,"The Court held that any law affecting personal liberty must be fair, just, and reasonable.",Holding for CASE_002,HOLDING_CASE_002,HOLDING,,case_outcomes,,
+,,nan,Holding for CASE_003,HOLDING_CASE_003,HOLDING,,case_outcomes,,
+,,,FOLLOWED,TREATMENT_FOLLOWED,CITATION_TREATMENT,POSITIVE,citation_treatments,,

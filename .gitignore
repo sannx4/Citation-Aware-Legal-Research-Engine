@@ -1,0 +1,54 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Virtual environment
+.venv/
+venv/
+env/
+
+# Secrets
+.env
+.env.*
+*.key
+*.pem
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Model/cache files
+.cache/
+huggingface/
+models/
+*.bin
+*.safetensors
+*.pt
+*.pth
+
+# Large indexes and generated embeddings
+data/indexes/
+*.faiss
+*.index
+*.npy
+*.pkl
+
+# Large raw downloaded files
+data/raw/sample_cases/*.pdf
+data/raw/statutes/
+data/raw/partial_downloads/
+
+# Frequently changing download logs/state
+data/raw/download_state.json
+data/raw/download_logs.csv
+data/raw/failed_downloads.csv
+data/raw/download_checkpoints.csv
+data/raw/file_hash_index.csv
+
+# Keep small important metadata files
+!data/raw/case_metadata.csv
+!data/raw/manifest.csv
+!data/raw/seed_urls.csv

@@ -1,0 +1,8 @@
+node_id,label,node_type,in_degree,out_degree,pagerank
+ARTICLE_21,article 21,ARTICLE,3,0,0.23821937447178443
+CASE_REF_ks_puttaswamy_v_union_of_india,ks puttaswamy v union of india,CASE,1,0,0.14921462496478563
+CASE_REF_maneka_gandhi_v_union_of_india,maneka gandhi v union of india,CASE,1,0,0.14921462496478563
+CASE_REF_ak_gopalan_v_state_of_madras,ak gopalan v state of madras,CASE,1,0,0.14921462496478563
+CASE_001,K.S. Puttaswamy v. Union of India,CASE,0,2,0.1047122502112862
+CASE_002,Maneka Gandhi v. Union of India,CASE,0,2,0.1047122502112862
+CASE_003,A.K. Gopalan v. State of Madras,CASE,0,2,0.1047122502112862

@@ -1,0 +1,3 @@
+case_id,cited_case_text,resolved_case_id,treatment,polarity,confidence,resolution_reason
+CASE_001,(1978) 1 SCC 248,CASE_002,FOLLOWED,POSITIVE,0.85,known_reporter_citation_map
+CASE_001,AIR 1950 SC 27,CASE_003,FOLLOWED,POSITIVE,0.85,known_reporter_citation_map

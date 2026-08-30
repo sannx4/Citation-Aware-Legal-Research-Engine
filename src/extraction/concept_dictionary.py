@@ -1,0 +1,55 @@
+LEGAL_CONCEPT_DICTIONARY = {
+    "PRIVACY": [
+        "privacy",
+        "right to privacy",
+        "informational privacy",
+        "data privacy",
+        "personal data",
+    ],
+    "PERSONAL_LIBERTY": [
+        "personal liberty",
+        "life and personal liberty",
+        "liberty",
+        "article 21",
+    ],
+    "NATURAL_JUSTICE": [
+        "natural justice",
+        "audi alteram partem",
+        "fair hearing",
+        "principles of natural justice",
+    ],
+    "DUE_PROCESS": [
+        "due process",
+        "fair procedure",
+        "just and reasonable",
+        "fair just and reasonable",
+        "procedure established by law",
+    ],
+    "MENS_REA": [
+        "mens rea",
+        "criminal intent",
+        "guilty mind",
+        "intention",
+        "knowledge",
+    ],
+    "BURDEN_OF_PROOF": [
+        "burden of proof",
+        "onus of proof",
+        "standard of proof",
+        "prove beyond reasonable doubt",
+    ],
+    "ARBITRARINESS": [
+        "arbitrariness",
+        "arbitrary",
+        "manifestly arbitrary",
+        "unreasonable classification",
+    ],
+    "REASONABLE_RESTRICTION": [
+        "reasonable restriction",
+        "reasonable restrictions",
+        "restriction in the interest",
+        "public order",
+        "morality",
+        "security of the state",
+    ],
+}

@@ -1,0 +1,8 @@
+node_id,node_type,label,source
+CASE_001,CASE,K.S. Puttaswamy v. Union of India,case_metadata
+CASE_002,CASE,Maneka Gandhi v. Union of India,case_metadata
+CASE_003,CASE,A.K. Gopalan v. State of Madras,case_metadata
+CASE_REF_ks_puttaswamy_v_union_of_india,CASE,ks puttaswamy v union of india,normalized_citations
+CASE_REF_maneka_gandhi_v_union_of_india,CASE,maneka gandhi v union of india,normalized_citations
+CASE_REF_ak_gopalan_v_state_of_madras,CASE,ak gopalan v state of madras,normalized_citations
+ARTICLE_21,ARTICLE,article 21,normalized_citations

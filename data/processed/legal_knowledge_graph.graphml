@@ -1,0 +1,475 @@
+<?xml version='1.0' encoding='utf-8'?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd"><key id="d21" for="edge" attr.name="evidence" attr.type="string"/>
+<key id="d20" for="edge" attr.name="cited_case_text" attr.type="string"/>
+<key id="d19" for="edge" attr.name="polarity" attr.type="string"/>
+<key id="d18" for="edge" attr.name="treatment" attr.type="string"/>
+<key id="d17" for="edge" attr.name="matched_keywords" attr.type="string"/>
+<key id="d16" for="edge" attr.name="mention_text" attr.type="string"/>
+<key id="d15" for="edge" attr.name="source_file" attr.type="string"/>
+<key id="d14" for="edge" attr.name="confidence" attr.type="double"/>
+<key id="d13" for="edge" attr.name="edge_type" attr.type="string"/>
+<key id="d12" for="edge" attr.name="target" attr.type="string"/>
+<key id="d11" for="edge" attr.name="source" attr.type="string"/>
+<key id="d10" for="edge" attr.name="edge_id" attr.type="string"/>
+<key id="d9" for="node" attr.name="polarity" attr.type="string"/>
+<key id="d8" for="node" attr.name="holding_text" attr.type="string"/>
+<key id="d7" for="node" attr.name="statute_id" attr.type="string"/>
+<key id="d6" for="node" attr.name="full_text" attr.type="string"/>
+<key id="d5" for="node" attr.name="year" attr.type="string"/>
+<key id="d4" for="node" attr.name="court" attr.type="string"/>
+<key id="d3" for="node" attr.name="source" attr.type="string"/>
+<key id="d2" for="node" attr.name="label" attr.type="string"/>
+<key id="d1" for="node" attr.name="node_type" attr.type="string"/>
+<key id="d0" for="node" attr.name="node_id" attr.type="string"/>
+<graph edgedefault="directed"><node id="CASE_001">
+  <data key="d0">CASE_001</data>
+  <data key="d1">CASE</data>
+  <data key="d2">K.S. Puttaswamy v. Union of India</data>
+  <data key="d3">case_metadata</data>
+  <data key="d4">Supreme Court of India</data>
+  <data key="d5">2017</data>
+</node>
+<node id="COURT_SUPREME_COURT_OF_INDIA">
+  <data key="d0">COURT_SUPREME_COURT_OF_INDIA</data>
+  <data key="d1">COURT</data>
+  <data key="d2">Supreme Court of India</data>
+  <data key="d3">case_metadata</data>
+</node>
+<node id="CASE_002">
+  <data key="d0">CASE_002</data>
+  <data key="d1">CASE</data>
+  <data key="d2">Maneka Gandhi v. Union of India</data>
+  <data key="d3">case_metadata</data>
+  <data key="d4">Supreme Court of India</data>
+  <data key="d5">1978</data>
+</node>
+<node id="CASE_003">
+  <data key="d0">CASE_003</data>
+  <data key="d1">CASE</data>
+  <data key="d2">A.K. Gopalan v. State of Madras</data>
+  <data key="d3">case_metadata</data>
+  <data key="d4">Supreme Court of India</data>
+  <data key="d5">1950</data>
+</node>
+<node id="ACT_CONSTITUTION_OF_INDIA">
+  <data key="d0">ACT_CONSTITUTION_OF_INDIA</data>
+  <data key="d1">ACT</data>
+  <data key="d2">Constitution of India</data>
+  <data key="d3">statute_links</data>
+</node>
+<node id="ARTICLE_21">
+  <data key="d0">ARTICLE_21</data>
+  <data key="d1">ARTICLE</data>
+  <data key="d2">Protection of life and personal liberty</data>
+  <data key="d3">statute_links</data>
+  <data key="d6">No person shall be deprived of his life or personal liberty except according to procedure established by law.</data>
+  <data key="d7">CONSTITUTION_OF_INDIA</data>
+</node>
+<node id="CONCEPT_PRIVACY">
+  <data key="d0">CONCEPT_PRIVACY</data>
+  <data key="d1">LEGAL_CONCEPT</data>
+  <data key="d2">PRIVACY</data>
+  <data key="d3">legal_concepts</data>
+</node>
+<node id="CONCEPT_PERSONAL_LIBERTY">
+  <data key="d0">CONCEPT_PERSONAL_LIBERTY</data>
+  <data key="d1">LEGAL_CONCEPT</data>
+  <data key="d2">PERSONAL_LIBERTY</data>
+  <data key="d3">legal_concepts</data>
+</node>
+<node id="CONCEPT_DUE_PROCESS">
+  <data key="d0">CONCEPT_DUE_PROCESS</data>
+  <data key="d1">LEGAL_CONCEPT</data>
+  <data key="d2">DUE_PROCESS</data>
+  <data key="d3">legal_concepts</data>
+</node>
+<node id="CONCEPT_ARBITRARINESS">
+  <data key="d0">CONCEPT_ARBITRARINESS</data>
+  <data key="d1">LEGAL_CONCEPT</data>
+  <data key="d2">ARBITRARINESS</data>
+  <data key="d3">legal_concepts</data>
+</node>
+<node id="HOLDING_CASE_001">
+  <data key="d0">HOLDING_CASE_001</data>
+  <data key="d1">HOLDING</data>
+  <data key="d2">Holding for CASE_001</data>
+  <data key="d3">case_outcomes</data>
+  <data key="d8">nan</data>
+</node>
+<node id="OUTCOME_HELD">
+  <data key="d0">OUTCOME_HELD</data>
+  <data key="d1">OUTCOME</data>
+  <data key="d2">HELD</data>
+  <data key="d3">case_outcomes</data>
+</node>
+<node id="HOLDING_CASE_002">
+  <data key="d0">HOLDING_CASE_002</data>
+  <data key="d1">HOLDING</data>
+  <data key="d2">Holding for CASE_002</data>
+  <data key="d3">case_outcomes</data>
+  <data key="d8">The Court held that any law affecting personal liberty must be fair, just, and reasonable.</data>
+</node>
+<node id="HOLDING_CASE_003">
+  <data key="d0">HOLDING_CASE_003</data>
+  <data key="d1">HOLDING</data>
+  <data key="d2">Holding for CASE_003</data>
+  <data key="d3">case_outcomes</data>
+  <data key="d8">nan</data>
+</node>
+<node id="TREATMENT_FOLLOWED">
+  <data key="d0">TREATMENT_FOLLOWED</data>
+  <data key="d1">CITATION_TREATMENT</data>
+  <data key="d2">FOLLOWED</data>
+  <data key="d3">citation_treatments</data>
+  <data key="d9">POSITIVE</data>
+</node>
+<edge source="CASE_001" target="COURT_SUPREME_COURT_OF_INDIA" id="KG_EDGE_000001">
+  <data key="d10">KG_EDGE_000001</data>
+  <data key="d11">CASE_001</data>
+  <data key="d12">COURT_SUPREME_COURT_OF_INDIA</data>
+  <data key="d13">CASE_DECIDED_BY_COURT</data>
+  <data key="d14">1.0</data>
+  <data key="d15">case_metadata.csv</data>
+</edge>
+<edge source="CASE_001" target="ARTICLE_21" id="KG_EDGE_000004">
+  <data key="d10">KG_EDGE_000004</data>
+  <data key="d11">CASE_001</data>
+  <data key="d12">ARTICLE_21</data>
+  <data key="d13">CASE_MENTIONS_ARTICLE</data>
+  <data key="d14">0.95</data>
+  <data key="d15">statute_links.csv</data>
+  <data key="d16">Article 21</data>
+</edge>
+<edge source="CASE_001" target="ARTICLE_21" id="KG_EDGE_000006">
+  <data key="d10">KG_EDGE_000006</data>
+  <data key="d11">CASE_001</data>
+  <data key="d12">ARTICLE_21</data>
+  <data key="d13">CASE_MENTIONS_ARTICLE</data>
+  <data key="d14">0.95</data>
+  <data key="d15">statute_links.csv</data>
+  <data key="d16">Article 21</data>
+</edge>
+<edge source="CASE_001" target="CONCEPT_PRIVACY" id="KG_EDGE_000014">
+  <data key="d10">KG_EDGE_000014</data>
+  <data key="d11">CASE_001</data>
+  <data key="d12">CONCEPT_PRIVACY</data>
+  <data key="d13">CASE_HAS_CONCEPT</data>
+  <data key="d14">0.7</data>
+  <data key="d15">legal_concepts.csv</data>
+  <data key="d17">privacy</data>
+</edge>
+<edge source="CASE_001" target="CONCEPT_PRIVACY" id="KG_EDGE_000015">
+  <data key="d10">KG_EDGE_000015</data>
+  <data key="d11">CASE_001</data>
+  <data key="d12">CONCEPT_PRIVACY</data>
+  <data key="d13">CASE_HAS_CONCEPT</data>
+  <data key="d14">0.8</data>
+  <data key="d15">legal_concepts.csv</data>
+  <data key="d17">privacy; right to privacy</data>
+</edge>
+<edge source="CASE_001" target="CONCEPT_PRIVACY" id="KG_EDGE_000017">
+  <data key="d10">KG_EDGE_000017</data>
+  <data key="d11">CASE_001</data>
+  <data key="d12">CONCEPT_PRIVACY</data>
+  <data key="d13">CASE_HAS_CONCEPT</data>
+  <data key="d14">0.7</data>
+  <data key="d15">legal_concepts.csv</data>
+  <data key="d17">privacy</data>
+</edge>
+<edge source="CASE_001" target="CONCEPT_PRIVACY" id="KG_EDGE_000020">
+  <data key="d10">KG_EDGE_000020</data>
+  <data key="d11">CASE_001</data>
+  <data key="d12">CONCEPT_PRIVACY</data>
+  <data key="d13">CASE_HAS_CONCEPT</data>
+  <data key="d14">0.8</data>
+  <data key="d15">legal_concepts.csv</data>
+  <data key="d17">privacy; right to privacy</data>
+</edge>
+<edge source="CASE_001" target="CONCEPT_PERSONAL_LIBERTY" id="KG_EDGE_000016">
+  <data key="d10">KG_EDGE_000016</data>
+  <data key="d11">CASE_001</data>
+  <data key="d12">CONCEPT_PERSONAL_LIBERTY</data>
+  <data key="d13">CASE_HAS_CONCEPT</data>
+  <data key="d14">0.7</data>
+  <data key="d15">legal_concepts.csv</data>
+  <data key="d17">article 21</data>
+</edge>
+<edge source="CASE_001" target="CONCEPT_PERSONAL_LIBERTY" id="KG_EDGE_000018">
+  <data key="d10">KG_EDGE_000018</data>
+  <data key="d11">CASE_001</data>
+  <data key="d12">CONCEPT_PERSONAL_LIBERTY</data>
+  <data key="d13">CASE_HAS_CONCEPT</data>
+  <data key="d14">0.9</data>
+  <data key="d15">legal_concepts.csv</data>
+  <data key="d17">personal liberty; life and personal liberty; liberty</data>
+</edge>
+<edge source="CASE_001" target="CONCEPT_PERSONAL_LIBERTY" id="KG_EDGE_000019">
+  <data key="d10">KG_EDGE_000019</data>
+  <data key="d11">CASE_001</data>
+  <data key="d12">CONCEPT_PERSONAL_LIBERTY</data>
+  <data key="d13">CASE_HAS_CONCEPT</data>
+  <data key="d14">0.7</data>
+  <data key="d15">legal_concepts.csv</data>
+  <data key="d17">liberty</data>
+</edge>
+<edge source="CASE_001" target="CONCEPT_PERSONAL_LIBERTY" id="KG_EDGE_000021">
+  <data key="d10">KG_EDGE_000021</data>
+  <data key="d11">CASE_001</data>
+  <data key="d12">CONCEPT_PERSONAL_LIBERTY</data>
+  <data key="d13">CASE_HAS_CONCEPT</data>
+  <data key="d14">0.7</data>
+  <data key="d15">legal_concepts.csv</data>
+  <data key="d17">article 21</data>
+</edge>
+<edge source="CASE_001" target="HOLDING_CASE_001" id="KG_EDGE_000030">
+  <data key="d10">KG_EDGE_000030</data>
+  <data key="d11">CASE_001</data>
+  <data key="d12">HOLDING_CASE_001</data>
+  <data key="d13">CASE_HAS_HOLDING</data>
+  <data key="d14">0.0</data>
+  <data key="d15">case_outcomes.csv</data>
+</edge>
+<edge source="CASE_001" target="CASE_002" id="KG_EDGE_000034">
+  <data key="d10">KG_EDGE_000034</data>
+  <data key="d11">CASE_001</data>
+  <data key="d12">CASE_002</data>
+  <data key="d13">CASE_CITES_CASE</data>
+  <data key="d14">0.85</data>
+  <data key="d15">citation_treatments.csv</data>
+  <data key="d18">FOLLOWED</data>
+  <data key="d19">POSITIVE</data>
+  <data key="d20">(1978) 1 SCC 248</data>
+</edge>
+<edge source="CASE_001" target="CASE_002" id="KG_EDGE_000035">
+  <data key="d10">KG_EDGE_000035</data>
+  <data key="d11">CASE_001</data>
+  <data key="d12">CASE_002</data>
+  <data key="d13">CASE_FOLLOWS_CASE</data>
+  <data key="d14">0.85</data>
+  <data key="d15">citation_treatments.csv</data>
+  <data key="d18">FOLLOWED</data>
+  <data key="d19">POSITIVE</data>
+  <data key="d20">(1978) 1 SCC 248</data>
+</edge>
+<edge source="CASE_001" target="TREATMENT_FOLLOWED" id="KG_EDGE_000036">
+  <data key="d10">KG_EDGE_000036</data>
+  <data key="d11">CASE_001</data>
+  <data key="d12">TREATMENT_FOLLOWED</data>
+  <data key="d13">CASE_HAS_CITATION_TREATMENT</data>
+  <data key="d14">0.85</data>
+  <data key="d15">citation_treatments.csv</data>
+  <data key="d20">(1978) 1 SCC 248</data>
+</edge>
+<edge source="CASE_001" target="TREATMENT_FOLLOWED" id="KG_EDGE_000039">
+  <data key="d10">KG_EDGE_000039</data>
+  <data key="d11">CASE_001</data>
+  <data key="d12">TREATMENT_FOLLOWED</data>
+  <data key="d13">CASE_HAS_CITATION_TREATMENT</data>
+  <data key="d14">0.85</data>
+  <data key="d15">citation_treatments.csv</data>
+  <data key="d20">AIR 1950 SC 27</data>
+</edge>
+<edge source="CASE_001" target="CASE_003" id="KG_EDGE_000037">
+  <data key="d10">KG_EDGE_000037</data>
+  <data key="d11">CASE_001</data>
+  <data key="d12">CASE_003</data>
+  <data key="d13">CASE_CITES_CASE</data>
+  <data key="d14">0.85</data>
+  <data key="d15">citation_treatments.csv</data>
+  <data key="d18">FOLLOWED</data>
+  <data key="d19">POSITIVE</data>
+  <data key="d20">AIR 1950 SC 27</data>
+</edge>
+<edge source="CASE_001" target="CASE_003" id="KG_EDGE_000038">
+  <data key="d10">KG_EDGE_000038</data>
+  <data key="d11">CASE_001</data>
+  <data key="d12">CASE_003</data>
+  <data key="d13">CASE_FOLLOWS_CASE</data>
+  <data key="d14">0.85</data>
+  <data key="d15">citation_treatments.csv</data>
+  <data key="d18">FOLLOWED</data>
+  <data key="d19">POSITIVE</data>
+  <data key="d20">AIR 1950 SC 27</data>
+</edge>
+<edge source="CASE_002" target="COURT_SUPREME_COURT_OF_INDIA" id="KG_EDGE_000002">
+  <data key="d10">KG_EDGE_000002</data>
+  <data key="d11">CASE_002</data>
+  <data key="d12">COURT_SUPREME_COURT_OF_INDIA</data>
+  <data key="d13">CASE_DECIDED_BY_COURT</data>
+  <data key="d14">1.0</data>
+  <data key="d15">case_metadata.csv</data>
+</edge>
+<edge source="CASE_002" target="ARTICLE_21" id="KG_EDGE_000008">
+  <data key="d10">KG_EDGE_000008</data>
+  <data key="d11">CASE_002</data>
+  <data key="d12">ARTICLE_21</data>
+  <data key="d13">CASE_MENTIONS_ARTICLE</data>
+  <data key="d14">0.95</data>
+  <data key="d15">statute_links.csv</data>
+  <data key="d16">Article 21</data>
+</edge>
+<edge source="CASE_002" target="ARTICLE_21" id="KG_EDGE_000010">
+  <data key="d10">KG_EDGE_000010</data>
+  <data key="d11">CASE_002</data>
+  <data key="d12">ARTICLE_21</data>
+  <data key="d13">CASE_MENTIONS_ARTICLE</data>
+  <data key="d14">0.95</data>
+  <data key="d15">statute_links.csv</data>
+  <data key="d16">Article 21</data>
+</edge>
+<edge source="CASE_002" target="CONCEPT_PERSONAL_LIBERTY" id="KG_EDGE_000022">
+  <data key="d10">KG_EDGE_000022</data>
+  <data key="d11">CASE_002</data>
+  <data key="d12">CONCEPT_PERSONAL_LIBERTY</data>
+  <data key="d13">CASE_HAS_CONCEPT</data>
+  <data key="d14">0.7</data>
+  <data key="d15">legal_concepts.csv</data>
+  <data key="d17">article 21</data>
+</edge>
+<edge source="CASE_002" target="CONCEPT_PERSONAL_LIBERTY" id="KG_EDGE_000024">
+  <data key="d10">KG_EDGE_000024</data>
+  <data key="d11">CASE_002</data>
+  <data key="d12">CONCEPT_PERSONAL_LIBERTY</data>
+  <data key="d13">CASE_HAS_CONCEPT</data>
+  <data key="d14">0.8</data>
+  <data key="d15">legal_concepts.csv</data>
+  <data key="d17">personal liberty; liberty</data>
+</edge>
+<edge source="CASE_002" target="CONCEPT_PERSONAL_LIBERTY" id="KG_EDGE_000026">
+  <data key="d10">KG_EDGE_000026</data>
+  <data key="d11">CASE_002</data>
+  <data key="d12">CONCEPT_PERSONAL_LIBERTY</data>
+  <data key="d13">CASE_HAS_CONCEPT</data>
+  <data key="d14">0.7</data>
+  <data key="d15">legal_concepts.csv</data>
+  <data key="d17">article 21</data>
+</edge>
+<edge source="CASE_002" target="CONCEPT_PERSONAL_LIBERTY" id="KG_EDGE_000027">
+  <data key="d10">KG_EDGE_000027</data>
+  <data key="d11">CASE_002</data>
+  <data key="d12">CONCEPT_PERSONAL_LIBERTY</data>
+  <data key="d13">CASE_HAS_CONCEPT</data>
+  <data key="d14">0.8</data>
+  <data key="d15">legal_concepts.csv</data>
+  <data key="d17">personal liberty; liberty</data>
+</edge>
+<edge source="CASE_002" target="CONCEPT_DUE_PROCESS" id="KG_EDGE_000023">
+  <data key="d10">KG_EDGE_000023</data>
+  <data key="d11">CASE_002</data>
+  <data key="d12">CONCEPT_DUE_PROCESS</data>
+  <data key="d13">CASE_HAS_CONCEPT</data>
+  <data key="d14">0.7</data>
+  <data key="d15">legal_concepts.csv</data>
+  <data key="d17">procedure established by law</data>
+</edge>
+<edge source="CASE_002" target="CONCEPT_ARBITRARINESS" id="KG_EDGE_000025">
+  <data key="d10">KG_EDGE_000025</data>
+  <data key="d11">CASE_002</data>
+  <data key="d12">CONCEPT_ARBITRARINESS</data>
+  <data key="d13">CASE_HAS_CONCEPT</data>
+  <data key="d14">0.7</data>
+  <data key="d15">legal_concepts.csv</data>
+  <data key="d17">arbitrary</data>
+</edge>
+<edge source="CASE_002" target="OUTCOME_HELD" id="KG_EDGE_000031">
+  <data key="d10">KG_EDGE_000031</data>
+  <data key="d11">CASE_002</data>
+  <data key="d12">OUTCOME_HELD</data>
+  <data key="d13">CASE_HAS_OUTCOME</data>
+  <data key="d14">0.9</data>
+  <data key="d15">case_outcomes.csv</data>
+  <data key="d21">Decision:
+The Court held that any law affecting personal liberty must be fair, just, and reasonable.</data>
+</edge>
+<edge source="CASE_002" target="HOLDING_CASE_002" id="KG_EDGE_000032">
+  <data key="d10">KG_EDGE_000032</data>
+  <data key="d11">CASE_002</data>
+  <data key="d12">HOLDING_CASE_002</data>
+  <data key="d13">CASE_HAS_HOLDING</data>
+  <data key="d14">0.9</data>
+  <data key="d15">case_outcomes.csv</data>
+</edge>
+<edge source="CASE_003" target="COURT_SUPREME_COURT_OF_INDIA" id="KG_EDGE_000003">
+  <data key="d10">KG_EDGE_000003</data>
+  <data key="d11">CASE_003</data>
+  <data key="d12">COURT_SUPREME_COURT_OF_INDIA</data>
+  <data key="d13">CASE_DECIDED_BY_COURT</data>
+  <data key="d14">1.0</data>
+  <data key="d15">case_metadata.csv</data>
+</edge>
+<edge source="CASE_003" target="ARTICLE_21" id="KG_EDGE_000012">
+  <data key="d10">KG_EDGE_000012</data>
+  <data key="d11">CASE_003</data>
+  <data key="d12">ARTICLE_21</data>
+  <data key="d13">CASE_MENTIONS_ARTICLE</data>
+  <data key="d14">0.95</data>
+  <data key="d15">statute_links.csv</data>
+  <data key="d16">Article 21</data>
+</edge>
+<edge source="CASE_003" target="CONCEPT_PERSONAL_LIBERTY" id="KG_EDGE_000028">
+  <data key="d10">KG_EDGE_000028</data>
+  <data key="d11">CASE_003</data>
+  <data key="d12">CONCEPT_PERSONAL_LIBERTY</data>
+  <data key="d13">CASE_HAS_CONCEPT</data>
+  <data key="d14">0.8</data>
+  <data key="d15">legal_concepts.csv</data>
+  <data key="d17">personal liberty; liberty</data>
+</edge>
+<edge source="CASE_003" target="CONCEPT_PERSONAL_LIBERTY" id="KG_EDGE_000029">
+  <data key="d10">KG_EDGE_000029</data>
+  <data key="d11">CASE_003</data>
+  <data key="d12">CONCEPT_PERSONAL_LIBERTY</data>
+  <data key="d13">CASE_HAS_CONCEPT</data>
+  <data key="d14">0.7</data>
+  <data key="d15">legal_concepts.csv</data>
+  <data key="d17">article 21</data>
+</edge>
+<edge source="CASE_003" target="HOLDING_CASE_003" id="KG_EDGE_000033">
+  <data key="d10">KG_EDGE_000033</data>
+  <data key="d11">CASE_003</data>
+  <data key="d12">HOLDING_CASE_003</data>
+  <data key="d13">CASE_HAS_HOLDING</data>
+  <data key="d14">0.0</data>
+  <data key="d15">case_outcomes.csv</data>
+</edge>
+<edge source="ARTICLE_21" target="ACT_CONSTITUTION_OF_INDIA" id="KG_EDGE_000005">
+  <data key="d10">KG_EDGE_000005</data>
+  <data key="d11">ARTICLE_21</data>
+  <data key="d12">ACT_CONSTITUTION_OF_INDIA</data>
+  <data key="d13">ARTICLE_BELONGS_TO_ACT</data>
+  <data key="d14">1.0</data>
+  <data key="d15">statute_links.csv</data>
+</edge>
+<edge source="ARTICLE_21" target="ACT_CONSTITUTION_OF_INDIA" id="KG_EDGE_000007">
+  <data key="d10">KG_EDGE_000007</data>
+  <data key="d11">ARTICLE_21</data>
+  <data key="d12">ACT_CONSTITUTION_OF_INDIA</data>
+  <data key="d13">ARTICLE_BELONGS_TO_ACT</data>
+  <data key="d14">1.0</data>
+  <data key="d15">statute_links.csv</data>
+</edge>
+<edge source="ARTICLE_21" target="ACT_CONSTITUTION_OF_INDIA" id="KG_EDGE_000009">
+  <data key="d10">KG_EDGE_000009</data>
+  <data key="d11">ARTICLE_21</data>
+  <data key="d12">ACT_CONSTITUTION_OF_INDIA</data>
+  <data key="d13">ARTICLE_BELONGS_TO_ACT</data>
+  <data key="d14">1.0</data>
+  <data key="d15">statute_links.csv</data>
+</edge>
+<edge source="ARTICLE_21" target="ACT_CONSTITUTION_OF_INDIA" id="KG_EDGE_000011">
+  <data key="d10">KG_EDGE_000011</data>
+  <data key="d11">ARTICLE_21</data>
+  <data key="d12">ACT_CONSTITUTION_OF_INDIA</data>
+  <data key="d13">ARTICLE_BELONGS_TO_ACT</data>
+  <data key="d14">1.0</data>
+  <data key="d15">statute_links.csv</data>
+</edge>
+<edge source="ARTICLE_21" target="ACT_CONSTITUTION_OF_INDIA" id="KG_EDGE_000013">
+  <data key="d10">KG_EDGE_000013</data>
+  <data key="d11">ARTICLE_21</data>
+  <data key="d12">ACT_CONSTITUTION_OF_INDIA</data>
+  <data key="d13">ARTICLE_BELONGS_TO_ACT</data>
+  <data key="d14">1.0</data>
+  <data key="d15">statute_links.csv</data>
+</edge>
+</graph></graphml>
