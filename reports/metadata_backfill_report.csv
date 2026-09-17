@@ -1,0 +1,62 @@
+document_id,file_name,old_year,new_year,old_court,new_court,year_changed,court_changed,pdf_exists
+ECOURTS_000001,ECOURTS_000001.pdf,2026,2026,Meghalaya High Court,Meghalaya High Court,False,False,True
+ECOURTS_000002,ECOURTS_000002.pdf,2017,2017,Calcutta High Court,Calcutta High Court,False,False,True
+ECOURTS_000003,ECOURTS_000003.pdf,2019,2019,Gauhati High Court,Gauhati High Court,False,False,True
+ECOURTS_000004,ECOURTS_000004.pdf,2026,2026,Gauhati High Court,Gauhati High Court,False,False,True
+ECOURTS_000005,ECOURTS_000005.pdf,2026,2026,Gauhati High Court,Gauhati High Court,False,False,True
+ECOURTS_000006,ECOURTS_000006.pdf,2026,2026,Punjab and Haryana High Court,Punjab and Haryana High Court,False,False,True
+ECOURTS_000007,ECOURTS_000007.pdf,2026,2026,Jharkhand High Court,Jharkhand High Court,False,False,True
+ECOURTS_000008,ECOURTS_000008.pdf,2026,2026,Punjab and Haryana High Court,Punjab and Haryana High Court,False,False,True
+ECOURTS_000009,ECOURTS_000009.pdf,2026,2026,Jharkhand High Court,Jharkhand High Court,False,False,True
+ECOURTS_000010,ECOURTS_000010.pdf,2020,2020,Himachal Pradesh High Court,Himachal Pradesh High Court,False,False,True
+ECOURTS_000011,ECOURTS_000011.pdf,2016,2016,Calcutta High Court,Calcutta High Court,False,False,True
+ECOURTS_000012,ECOURTS_000012.pdf,2025,2025,Calcutta High Court,Calcutta High Court,False,False,True
+ECOURTS_000013,ECOURTS_000013.pdf,2026,2026,Punjab and Haryana High Court,Punjab and Haryana High Court,False,False,True
+ECOURTS_000014,ECOURTS_000014.pdf,2017,2017,Gujarat High Court,Gujarat High Court,False,False,True
+ECOURTS_000015,ECOURTS_000015.pdf,2025,2025,Punjab and Haryana High Court,Punjab and Haryana High Court,False,False,True
+ECOURTS_000016,ECOURTS_000016.pdf,2016,2016,Gujarat High Court,Gujarat High Court,False,False,True
+ECOURTS_000017,ECOURTS_000017.pdf,2025,2025,Telangana High Court,Telangana High Court,False,False,True
+ECOURTS_000018,ECOURTS_000018.pdf,2026,2026,Patna High Court,Patna High Court,False,False,True
+ECOURTS_000019,ECOURTS_000019.pdf,2017,2017,Bombay High Court,Bombay High Court,False,False,True
+ECOURTS_000020,ECOURTS_000020.pdf,2026,2026,Telangana High Court,Telangana High Court,False,False,True
+ECOURTS_000021,ECOURTS_000021.pdf,2024,2024,Calcutta High Court,Calcutta High Court,False,False,True
+ECOURTS_000022,ECOURTS_000022.pdf,2024,2024,Bombay High Court,Bombay High Court,False,False,True
+ECOURTS_000023,ECOURTS_000023.pdf,2026,2026,Bombay High Court,Bombay High Court,False,False,True
+ECOURTS_000024,ECOURTS_000024.pdf,2025,2025,Andhra Pradesh High Court,Andhra Pradesh High Court,False,False,True
+ECOURTS_000025,ECOURTS_000025.pdf,2026,2026,Himachal Pradesh High Court,Himachal Pradesh High Court,False,False,True
+ECOURTS_000026,ECOURTS_000026.pdf,2026,2026,Punjab and Haryana High Court,Punjab and Haryana High Court,False,False,True
+ECOURTS_000027,ECOURTS_000027.pdf,2026,2026,Gauhati High Court,Gauhati High Court,False,False,True
+ECOURTS_000028,ECOURTS_000028.pdf,2026,2026,Andhra Pradesh High Court,Andhra Pradesh High Court,False,False,True
+ECOURTS_000029,ECOURTS_000029.pdf,2019,2019,Punjab and Haryana High Court,Punjab and Haryana High Court,False,False,True
+ECOURTS_000030,ECOURTS_000030.pdf,2019,2019,Punjab and Haryana High Court,Punjab and Haryana High Court,False,False,True
+ECOURTS_000031,ECOURTS_000031.pdf,2026,2026,Punjab and Haryana High Court,Punjab and Haryana High Court,False,False,True
+ECOURTS_000032,ECOURTS_000032.pdf,2021,2021,Andhra Pradesh High Court,Andhra Pradesh High Court,False,False,True
+ECOURTS_000033,ECOURTS_000033.pdf,2021,2021,Andhra Pradesh High Court,Andhra Pradesh High Court,False,False,True
+ECOURTS_000034,ECOURTS_000034.pdf,2026,2026,Calcutta High Court,Calcutta High Court,False,False,True
+ECOURTS_000035,ECOURTS_000035.pdf,2025,2025,Chhattisgarh High Court,Chhattisgarh High Court,False,False,True
+ECOURTS_000036,ECOURTS_000036.pdf,2026,2026,Gauhati High Court,Gauhati High Court,False,False,True
+ECOURTS_000037,ECOURTS_000037.pdf,2026,2026,Madras High Court,Madras High Court,False,False,True
+ECOURTS_000038,ECOURTS_000038.pdf,2025,2025,Delhi High Court,Delhi High Court,False,False,True
+ECOURTS_000039,ECOURTS_000039.pdf,2024,2024,Delhi High Court,Delhi High Court,False,False,True
+ECOURTS_000040,ECOURTS_000040.pdf,2023,2023,Calcutta High Court,Calcutta High Court,False,False,True
+ECOURTS_000041,ECOURTS_000041.pdf,2026,2026,Orissa High Court,Orissa High Court,False,False,True
+ECOURTS_000042,ECOURTS_000042.pdf,2026,2026,Chhattisgarh High Court,Chhattisgarh High Court,False,False,True
+ECOURTS_000043,ECOURTS_000043.pdf,2026,2026,Delhi High Court,Delhi High Court,False,False,True
+ECOURTS_000044,ECOURTS_000044.pdf,2026,2026,Punjab and Haryana High Court,Punjab and Haryana High Court,False,False,True
+ECOURTS_000045,ECOURTS_000045.pdf,2022,2022,Calcutta High Court,Calcutta High Court,False,False,True
+ECOURTS_000046,ECOURTS_000046.pdf,2025,2025,Orissa High Court,Orissa High Court,False,False,True
+ECOURTS_000047,ECOURTS_000047.pdf,1927,1927,Chhattisgarh High Court,Chhattisgarh High Court,False,False,True
+ECOURTS_000048,ECOURTS_000048.pdf,1994,1994,Punjab and Haryana High Court,Punjab and Haryana High Court,False,False,True
+ECOURTS_000049,ECOURTS_000049.pdf,2017,2017,Patna High Court,Patna High Court,False,False,True
+ECOURTS_000050,ECOURTS_000050.pdf,2025,2025,Orissa High Court,Orissa High Court,False,False,True
+ECOURTS_000051,ECOURTS_000051.pdf,2025,2025,Himachal Pradesh High Court,Himachal Pradesh High Court,False,False,True
+ECOURTS_000052,ECOURTS_000052.pdf,2022,2022,Telangana High Court,Telangana High Court,False,False,True
+ECOURTS_000053,ECOURTS_000053.pdf,2004,2004,Telangana High Court,Telangana High Court,False,False,True
+ECOURTS_000054,ECOURTS_000054.pdf,2023,2023,Bombay High Court,Bombay High Court,False,False,True
+ECOURTS_000055,ECOURTS_000055.pdf,2025,2025,Andhra Pradesh High Court,Andhra Pradesh High Court,False,False,True
+ECOURTS_000061,ECOURTS_000061.pdf,2025,2025,Karnataka High Court,Karnataka High Court,False,False,True
+ECOURTS_000064,ECOURTS_000064.pdf,2022,2022,Gauhati High Court,Gauhati High Court,False,False,True
+ECOURTS_000065,ECOURTS_000065.pdf,2022,2022,Chhattisgarh High Court,Chhattisgarh High Court,False,False,True
+ECOURTS_000066,ECOURTS_000066.pdf,2025,2025,Orissa High Court,Orissa High Court,False,False,True
+ECOURTS_000067,ECOURTS_000067.pdf,2020,2020,Orissa High Court,Orissa High Court,False,False,True
+ECOURTS_000068,ECOURTS_000068.pdf,2025,2025,Orissa High Court,Orissa High Court,False,False,True

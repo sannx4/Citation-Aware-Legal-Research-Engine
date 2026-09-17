@@ -36,19 +36,39 @@ data/indexes/
 *.npy
 *.pkl
 
-# Large raw downloaded files
+# ---------------------------------------------------------
+# Raw corpus / downloaded documents
+# ---------------------------------------------------------
+
 data/raw/sample_cases/*.pdf
+data/raw/sample_cases/*.part
 data/raw/statutes/
 data/raw/partial_downloads/
 
-# Frequently changing download logs/state
+# Metadata backups
+data/raw/backups/
+
+# Generated local corpus snapshots
+data/raw/corpus_versions/
+
+# ---------------------------------------------------------
+# Frequently changing ingestion state
+# ---------------------------------------------------------
+
 data/raw/download_state.json
 data/raw/download_logs.csv
 data/raw/failed_downloads.csv
 data/raw/download_checkpoints.csv
-data/raw/file_hash_index.csv
 
-# Keep small important metadata files
+data/raw/sample_cases/file_hash_index.csv
+data/raw/sample_cases/duplicate_downloads.csv
+
+# ---------------------------------------------------------
+# Keep reproducible corpus metadata
+# ---------------------------------------------------------
+
 !data/raw/case_metadata.csv
 !data/raw/manifest.csv
 !data/raw/seed_urls.csv
+!data/raw/manifest_deduped.csv
+!data/raw/corpus_registry.csv

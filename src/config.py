@@ -55,7 +55,9 @@ CRAWL_RATE_REPORT_PATH = REPORTS_DIR / "crawl_rate_report.csv"
 SEED_URLS_PATH = RAW_DATA_DIR / "seed_urls.csv"
 
 DUPLICATE_DOWNLOADS_PATH = RAW_CASES_DIR / "duplicate_downloads.csv"
-DEDUPED_MANIFEST_PATH = RAW_DATA_DIR / "manifest_deduped.csv"
+DEDUPED_MANIFEST_PATH = (
+    RAW_DATA_DIR / "manifest_deduped.csv"
+)
 
 FILE_HASH_INDEX_PATH = RAW_CASES_DIR / "file_hash_index.csv"
 
@@ -173,6 +175,18 @@ EMBEDDING_MODEL_COMPARISON_PATH = (
     REPORTS_DIR / "embedding_model_comparison.csv"
 )
 
+CORPUS_REGISTRY_PATH = (
+    RAW_DATA_DIR / "corpus_registry.csv"
+)
+
+CORPUS_VERSIONS_DIR = DATA_DIR / "corpus_versions"
+
+CORPUS_STATS_PATH = (
+    REPORTS_DIR / "corpus_stats.json"
+)
+
+CORPUS_SCALE_REPORT_PATH = REPORTS_DIR / "corpus_scale_report.md"
+
 def create_project_directories() -> None:
     directories = [
         RAW_DATA_DIR,
@@ -186,6 +200,7 @@ def create_project_directories() -> None:
         CRAWLERS_DIR,
         PARTIAL_DOWNLOADS_DIR,
         EVAL_DATA_DIR,
+        CORPUS_VERSIONS_DIR,
     ]
 
     for directory in directories:

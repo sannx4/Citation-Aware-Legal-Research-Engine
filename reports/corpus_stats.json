@@ -1,0 +1,45 @@
+{
+  "total_registry_rows": 61,
+  "valid_unique_judgments": 56,
+  "invalid_documents": 0,
+  "duplicate_documents": 5,
+  "total_pages": 1288,
+  "average_pages_per_judgment": 23.0,
+  "total_size_mb": 18.15,
+  "average_file_size_mb": 0.32,
+  "sources": {
+    "ecourts": 56
+  },
+  "courts": {
+    "Punjab and Haryana High Court": 9,
+    "Calcutta High Court": 7,
+    "Gauhati High Court": 6,
+    "Orissa High Court": 6,
+    "Bombay High Court": 4,
+    "Andhra Pradesh High Court": 4,
+    "Chhattisgarh High Court": 4,
+    "Himachal Pradesh High Court": 3,
+    "Telangana High Court": 3,
+    "Jharkhand High Court": 2,
+    "Patna High Court": 2,
+    "Delhi High Court": 2,
+    "Meghalaya High Court": 1,
+    "Gujarat High Court": 1,
+    "Madras High Court": 1,
+    "Karnataka High Court": 1
+  },
+  "years": {
+    "2026": 23,
+    "2025": 13,
+    "2017": 4,
+    "2022": 4,
+    "2019": 2,
+    "2020": 2,
+    "2024": 2,
+    "2023": 2,
+    "2016": 1,
+    "2021": 1,
+    "1927": 1,
+    "1994": 1
+  }
+}

@@ -6,155 +6,522 @@ from pathlib import Path
 import pandas as pd
 
 ROOT_DIR = Path(__file__).resolve().parents[2]
-sys.path.append(str(ROOT_DIR))
+
+if str(ROOT_DIR) not in sys.path:
+    sys.path.append(str(ROOT_DIR))
 
 from src.config import (
     MANIFEST_PATH,
-    RAW_CASES_DIR,
-    RAW_STATUTES_DIR,
+    SEED_URLS_PATH,
     PDF_INTEGRITY_REPORT_PATH,
     DUPLICATE_DOWNLOADS_PATH,
     DEDUPED_MANIFEST_PATH,
 )
 
-from src.ingestion.hash_index import main as run_hash_index
-from src.ingestion.error_classifier import main as run_error_classifier
+from src.ingestion.hash_index import (
+    main as run_hash_index,
+)
+
+from src.ingestion.error_classifier import (
+    main as run_error_classifier,
+)
 
 
-def get_file_path(document_type: str, file_name: str) -> Path:
-    if str(document_type).lower() == "statute":
-        return RAW_STATUTES_DIR / file_name
-    return RAW_CASES_DIR / file_name
+# ============================================================
+# Helpers
+# ============================================================
+
+def clean(value) -> str:
+    if value is None:
+        return ""
+
+    value = str(value).strip()
+
+    if value.lower() == "nan":
+        return ""
+
+    return value
 
 
 def normalize_text(value: str) -> str:
-    return " ".join(str(value).lower().strip().split())
+    return " ".join(
+        clean(value)
+        .lower()
+        .split()
+    )
 
 
 def normalize_url(url: str) -> str:
-    return str(url).strip().split("#")[0].rstrip("/")
+    return (
+        clean(url)
+        .split("#")[0]
+        .rstrip("/")
+    )
 
 
-def judgment_key(row: pd.Series) -> str:
-    title = normalize_text(row.get("title", ""))
-    court = normalize_text(row.get("court", ""))
-    year = normalize_text(row.get("year", ""))
-    return f"{title}|{court}|{year}"
+def sha256_file(
+    file_path: Path,
+) -> str:
 
-
-def sha256_file(file_path: Path) -> str:
     hasher = hashlib.sha256()
 
     with file_path.open("rb") as file:
-        for block in iter(lambda: file.read(1024 * 1024), b""):
+        for block in iter(
+            lambda: file.read(
+                1024 * 1024
+            ),
+            b"",
+        ):
             hasher.update(block)
 
     return hasher.hexdigest()
 
 
-def load_valid_pdf_ids() -> set[str]:
+# ============================================================
+# Metadata loading
+# ============================================================
+
+def load_optional_csv(
+    path: Path,
+) -> pd.DataFrame:
+
+    if not path.exists():
+        return pd.DataFrame()
+
+    try:
+        return pd.read_csv(path)
+
+    except pd.errors.EmptyDataError:
+        return pd.DataFrame()
+
+
+def build_url_index() -> dict[str, str]:
+    """
+    Build document_id -> URL mapping.
+
+    New seed_urls.csv takes precedence over the
+    historical manifest.
+    """
+
+    url_index = {}
+
+    # --------------------------------------------------------
+    # Historical manifest
+    # --------------------------------------------------------
+
+    manifest = load_optional_csv(
+        MANIFEST_PATH
+    )
+
+    if not manifest.empty:
+
+        for _, row in manifest.iterrows():
+
+            document_id = clean(
+                row.get(
+                    "document_id",
+                    "",
+                )
+            )
+
+            url = normalize_url(
+                row.get(
+                    "url",
+                    "",
+                )
+            )
+
+            if document_id and url:
+                url_index[
+                    document_id
+                ] = url
+
+    # --------------------------------------------------------
+    # Growing eCourts seed metadata
+    # --------------------------------------------------------
+
+    seeds = load_optional_csv(
+        SEED_URLS_PATH
+    )
+
+    if not seeds.empty:
+
+        for _, row in seeds.iterrows():
+
+            document_id = clean(
+                row.get(
+                    "document_id",
+                    "",
+                )
+            )
+
+            url = normalize_url(
+                row.get(
+                    "url",
+                    "",
+                )
+            )
+
+            if document_id and url:
+                url_index[
+                    document_id
+                ] = url
+
+    return url_index
+
+
+# ============================================================
+# Load valid corpus
+# ============================================================
+
+def load_valid_corpus() -> pd.DataFrame:
+    """
+    PDF integrity report is now the authoritative
+    source for physical files.
+
+    20 valid PDFs -> 20 rows here.
+    """
+
     if not PDF_INTEGRITY_REPORT_PATH.exists():
         raise FileNotFoundError(
-            f"Run Gap 37 first. Missing: {PDF_INTEGRITY_REPORT_PATH}"
+            "Run PDF integrity check first. "
+            f"Missing: {PDF_INTEGRITY_REPORT_PATH}"
         )
 
-    report = pd.read_csv(PDF_INTEGRITY_REPORT_PATH)
+    report = pd.read_csv(
+        PDF_INTEGRITY_REPORT_PATH
+    )
 
-    valid = report[
+    if "is_valid_pdf" not in report.columns:
+        raise ValueError(
+            "Integrity report is missing "
+            "'is_valid_pdf' column."
+        )
+
+    valid_mask = (
         report["is_valid_pdf"]
         .astype(str)
         .str.lower()
-        .isin(["true", "1", "yes"])
-    ]
+        .isin(
+            [
+                "true",
+                "1",
+                "yes",
+            ]
+        )
+    )
 
-    return set(valid["document_id"].astype(str))
+    valid = (
+        report[
+            valid_mask
+        ]
+        .copy()
+        .reset_index(
+            drop=True
+        )
+    )
 
+    url_index = (
+        build_url_index()
+    )
+
+    valid["url"] = (
+        valid["document_id"]
+        .astype(str)
+        .map(
+            lambda document_id:
+                url_index.get(
+                    document_id,
+                    "",
+                )
+        )
+    )
+
+    return valid
+
+
+# ============================================================
+# Metadata duplicate key
+# ============================================================
+
+def judgment_key(
+    row: pd.Series,
+) -> str:
+    """
+    Secondary duplicate signal.
+
+    We intentionally keep this conservative because
+    generic court metadata can otherwise create
+    false positives.
+    """
+
+    title = normalize_text(
+        row.get(
+            "title",
+            "",
+        )
+    )
+
+    court = normalize_text(
+        row.get(
+            "court",
+            "",
+        )
+    )
+
+    year = normalize_text(
+        row.get(
+            "year",
+            "",
+        )
+    )
+
+    # Title is mandatory for metadata matching.
+    if not title:
+        return ""
+
+    return (
+        f"{title}|"
+        f"{court}|"
+        f"{year}"
+    )
+
+
+# ============================================================
+# Duplicate detection
+# ============================================================
 
 def detect_duplicates(
-    manifest: pd.DataFrame,
-    valid_ids: set[str],
-) -> tuple[list[dict], pd.DataFrame]:
+    corpus: pd.DataFrame,
+) -> tuple[
+    list[dict],
+    pd.DataFrame,
+]:
+    """
+    Detect one canonical duplicate relationship
+    per physical document.
 
-    seen_urls = {}
+    Priority:
+
+    1. same SHA-256
+    2. same URL
+    3. same judgment metadata
+
+    SHA-256 is strongest and is what identifies
+    ECOURTS_000016 as the same physical judgment
+    as ECOURTS_000014.
+    """
+
     seen_hashes = {}
+    seen_urls = {}
     seen_judgments = {}
 
     duplicate_rows = []
-    keep_ids = []
+    keep_indices = []
 
-    for _, row in manifest.iterrows():
-        document_id = str(row["document_id"])
-        document_type = str(row["document_type"])
-        file_name = str(row["file_name"])
+    for index, row in corpus.iterrows():
 
-        if document_id not in valid_ids:
+        document_id = clean(
+            row.get(
+                "document_id",
+                "",
+            )
+        )
+
+        file_name = clean(
+            row.get(
+                "file_name",
+                "",
+            )
+        )
+
+        file_path_value = clean(
+            row.get(
+                "file_path",
+                "",
+            )
+        )
+
+        url = normalize_url(
+            row.get(
+                "url",
+                "",
+            )
+        )
+
+        metadata_key = (
+            judgment_key(row)
+        )
+
+        file_hash = ""
+
+        if file_path_value:
+
+            file_path = Path(
+                file_path_value
+            )
+
+            if file_path.exists():
+
+                file_hash = sha256_file(
+                    file_path
+                )
+
+        duplicate_of = ""
+        duplicate_type = ""
+        duplicate_value = ""
+
+        # ----------------------------------------------------
+        # 1. Exact binary duplicate
+        # ----------------------------------------------------
+
+        if (
+            file_hash
+            and file_hash
+            in seen_hashes
+        ):
+
+            duplicate_of = (
+                seen_hashes[
+                    file_hash
+                ]
+            )
+
+            duplicate_type = (
+                "same_file_hash"
+            )
+
+            duplicate_value = (
+                file_hash
+            )
+
+        # ----------------------------------------------------
+        # 2. Same source URL
+        # ----------------------------------------------------
+
+        elif (
+            url
+            and url
+            in seen_urls
+        ):
+
+            duplicate_of = (
+                seen_urls[url]
+            )
+
+            duplicate_type = (
+                "same_url"
+            )
+
+            duplicate_value = url
+
+        # ----------------------------------------------------
+        # 3. Same normalized metadata
+        # ----------------------------------------------------
+
+        elif (
+            metadata_key
+            and metadata_key
+            in seen_judgments
+        ):
+
+            duplicate_of = (
+                seen_judgments[
+                    metadata_key
+                ]
+            )
+
+            duplicate_type = (
+                "same_judgment_metadata"
+            )
+
+            duplicate_value = (
+                metadata_key
+            )
+
+        # ----------------------------------------------------
+        # Duplicate
+        # ----------------------------------------------------
+
+        if duplicate_of:
+
+            duplicate_rows.append(
+                {
+                    "duplicate_document_id":
+                        document_id,
+
+                    "original_document_id":
+                        duplicate_of,
+
+                    "duplicate_type":
+                        duplicate_type,
+
+                    "duplicate_value":
+                        duplicate_value,
+
+                    "file_name":
+                        file_name,
+                }
+            )
+
             continue
 
-        duplicate_found = False
+        # ----------------------------------------------------
+        # Canonical document
+        # ----------------------------------------------------
 
-        url = normalize_url(row.get("url", ""))
+        keep_indices.append(
+            index
+        )
 
-        if url and url in seen_urls:
-            duplicate_rows.append(
-                {
-                    "duplicate_document_id": document_id,
-                    "original_document_id": seen_urls[url],
-                    "duplicate_type": "same_url",
-                    "duplicate_value": url,
-                    "file_name": file_name,
-                }
-            )
-            duplicate_found = True
-        elif url:
-            seen_urls[url] = document_id
+        if file_hash:
 
-        file_path = get_file_path(document_type, file_name)
+            seen_hashes[
+                file_hash
+            ] = document_id
 
-        if file_path.exists():
-            file_hash = sha256_file(file_path)
+        if url:
 
-            if file_hash in seen_hashes:
-                duplicate_rows.append(
-                    {
-                        "duplicate_document_id": document_id,
-                        "original_document_id": seen_hashes[file_hash],
-                        "duplicate_type": "same_file_hash",
-                        "duplicate_value": file_hash,
-                        "file_name": file_name,
-                    }
-                )
-                duplicate_found = True
-            else:
-                seen_hashes[file_hash] = document_id
+            seen_urls[
+                url
+            ] = document_id
 
-        key = judgment_key(row)
+        if metadata_key:
 
-        if key.strip("|") and key in seen_judgments:
-            duplicate_rows.append(
-                {
-                    "duplicate_document_id": document_id,
-                    "original_document_id": seen_judgments[key],
-                    "duplicate_type": "same_judgment_metadata",
-                    "duplicate_value": key,
-                    "file_name": file_name,
-                }
-            )
-            duplicate_found = True
-        elif key.strip("|"):
-            seen_judgments[key] = document_id
+            seen_judgments[
+                metadata_key
+            ] = document_id
 
-        if not duplicate_found:
-            keep_ids.append(document_id)
+    deduped = (
+        corpus
+        .loc[
+            keep_indices
+        ]
+        .copy()
+        .reset_index(
+            drop=True
+        )
+    )
 
-    deduped_manifest = manifest[
-        manifest["document_id"].astype(str).isin(keep_ids)
-    ]
-
-    return duplicate_rows, deduped_manifest
+    return (
+        duplicate_rows,
+        deduped,
+    )
 
 
-def write_csv(rows: list[dict], output_path: Path) -> None:
-    output_path.parent.mkdir(parents=True, exist_ok=True)
+# ============================================================
+# Write duplicate report
+# ============================================================
+
+def write_duplicate_report(
+    rows: list[dict],
+    output_path: Path,
+) -> None:
+
+    output_path.parent.mkdir(
+        parents=True,
+        exist_ok=True,
+    )
 
     fieldnames = [
         "duplicate_document_id",
@@ -164,49 +531,145 @@ def write_csv(rows: list[dict], output_path: Path) -> None:
         "file_name",
     ]
 
-    with output_path.open("w", encoding="utf-8", newline="") as file:
-        writer = csv.DictWriter(file, fieldnames=fieldnames)
-        writer.writeheader()
-        writer.writerows(rows)
+    with output_path.open(
+        "w",
+        encoding="utf-8",
+        newline="",
+    ) as file:
 
+        writer = csv.DictWriter(
+            file,
+            fieldnames=fieldnames,
+        )
+
+        writer.writeheader()
+
+        writer.writerows(
+            rows
+        )
+
+
+# ============================================================
+# Main
+# ============================================================
 
 def main() -> None:
-    if not MANIFEST_PATH.exists():
-        raise FileNotFoundError(f"Manifest not found: {MANIFEST_PATH}")
 
-    manifest = pd.read_csv(MANIFEST_PATH)
-    valid_ids = load_valid_pdf_ids()
+    corpus = load_valid_corpus()
 
-    duplicates, deduped_manifest = detect_duplicates(manifest, valid_ids)
+    (
+        duplicates,
+        deduped_corpus,
+    ) = detect_duplicates(
+        corpus
+    )
 
-    write_csv(duplicates, DUPLICATE_DOWNLOADS_PATH)
+    # --------------------------------------------------------
+    # Duplicate relationship report
+    # --------------------------------------------------------
 
-    DEDUPED_MANIFEST_PATH.parent.mkdir(parents=True, exist_ok=True)
-    deduped_manifest.to_csv(DEDUPED_MANIFEST_PATH, index=False)
+    write_duplicate_report(
+        duplicates,
+        DUPLICATE_DOWNLOADS_PATH,
+    )
 
-    print("\nGap 36 Duplicate Detection Report")
+    # --------------------------------------------------------
+    # Deduped corpus
+    # --------------------------------------------------------
+
+    DEDUPED_MANIFEST_PATH.parent.mkdir(
+        parents=True,
+        exist_ok=True,
+    )
+
+    deduped_corpus.to_csv(
+        DEDUPED_MANIFEST_PATH,
+        index=False,
+    )
+
+    # --------------------------------------------------------
+    # Report
+    # --------------------------------------------------------
+
+    total_valid = len(
+        corpus
+    )
+
+    duplicate_count = len(
+        duplicates
+    )
+
+    unique_count = len(
+        deduped_corpus
+    )
+
+    print(
+        "\nGap 36 Duplicate Detection Report"
+    )
+
     print("=" * 70)
-    print(f"Manifest rows checked: {len(manifest)}")
-    print(f"Valid PDFs checked: {len(valid_ids)}")
-    print(f"Duplicates found: {len(duplicates)}")
-    print(f"Deduped manifest rows: {len(deduped_manifest)}")
-    print(f"Duplicate report saved to: {DUPLICATE_DOWNLOADS_PATH}")
-    print(f"Deduped manifest saved to: {DEDUPED_MANIFEST_PATH}")
+
+    print(
+        f"Valid PDFs checked: "
+        f"{total_valid}"
+    )
+
+    print(
+        f"Unique documents: "
+        f"{unique_count}"
+    )
+
+    print(
+        f"Duplicates found: "
+        f"{duplicate_count}"
+    )
+
+    print(
+        f"Deduped corpus rows: "
+        f"{unique_count}"
+    )
+
+    print(
+        f"Duplicate report saved to: "
+        f"{DUPLICATE_DOWNLOADS_PATH}"
+    )
+
+    print(
+        f"Deduped corpus saved to: "
+        f"{DEDUPED_MANIFEST_PATH}"
+    )
+
     print("=" * 70)
 
-    for row in duplicates[:10]:
+    for row in duplicates:
+
         print(
-            f"{row['duplicate_document_id']} duplicates "
+            f"{row['duplicate_document_id']} "
+            f"duplicates "
             f"{row['original_document_id']} | "
             f"{row['duplicate_type']}"
         )
 
-    print("\nStarting Gap 39 Hash Index after Gap 36...")
+    # --------------------------------------------------------
+    # Continue existing pipeline
+    # --------------------------------------------------------
+
+    print(
+        "\nStarting Gap 39 Hash Index "
+        "after Gap 36..."
+    )
+
     print("=" * 70)
+
     run_hash_index()
 
-    print("\nStarting Gap 38 Error Classification after Gap 39...")
+    print(
+        "\nStarting Gap 38 Error "
+        "Classification after Gap 39..."
+    )
+
     print("=" * 70)
+
     run_error_classifier()
 
 

@@ -1,39 +1,298 @@
-import sys
 import csv
+import sys
 from pathlib import Path
 
 import fitz
-import pandas as pd
 
 ROOT_DIR = Path(__file__).resolve().parents[2]
-sys.path.append(str(ROOT_DIR))
+
+if str(ROOT_DIR) not in sys.path:
+    sys.path.append(str(ROOT_DIR))
 
 from src.config import (
     MANIFEST_PATH,
     RAW_CASES_DIR,
     RAW_STATUTES_DIR,
     PDF_INTEGRITY_REPORT_PATH,
+    SEED_URLS_PATH,
 )
 
-from src.ingestion.duplicate_detector import main as run_duplicate_detection
+from src.ingestion.duplicate_detector import (
+    main as run_duplicate_detection,
+)
 
 
-def get_file_path(document_type: str, file_name: str) -> Path:
-    if str(document_type).lower() == "statute":
-        return RAW_STATUTES_DIR / file_name
+# ============================================================
+# Metadata helpers
+# ============================================================
 
-    return RAW_CASES_DIR / file_name
+def clean(value) -> str:
+    if value is None:
+        return ""
+
+    value = str(value).strip()
+
+    if value.lower() == "nan":
+        return ""
+
+    return value
 
 
-def looks_like_html(file_path: Path) -> bool:
+def load_csv_rows(
+    path: Path,
+) -> list[dict]:
+
+    if not path.exists():
+        return []
+
+    with path.open(
+        "r",
+        encoding="utf-8",
+        newline="",
+    ) as file:
+
+        return list(
+            csv.DictReader(file)
+        )
+
+
+def build_metadata_index() -> dict[str, dict]:
+    """
+    Build metadata lookup from both:
+
+    1. seed_urls.csv
+       - new growing eCourts corpus
+
+    2. manifest.csv
+       - older corpus entries / statutes
+
+    Lookup is keyed primarily by file_name.
+    """
+
+    metadata = {}
+
+    # --------------------------------------------------------
+    # Old manifest first
+    # --------------------------------------------------------
+
+    for row in load_csv_rows(
+        MANIFEST_PATH
+    ):
+
+        file_name = clean(
+            row.get("file_name")
+        )
+
+        if not file_name:
+            continue
+
+        metadata[file_name] = {
+            "document_id": clean(
+                row.get("document_id")
+            ),
+            "source": clean(
+                row.get("source")
+            ),
+            "document_type": clean(
+                row.get("document_type")
+            ),
+            "title": clean(
+                row.get("title")
+            ),
+            "court": clean(
+                row.get("court")
+            ),
+            "year": clean(
+                row.get("year")
+            ),
+        }
+
+    # --------------------------------------------------------
+    # seed_urls.csv overrides manifest metadata
+    # because it represents newer downloaded cases.
+    # --------------------------------------------------------
+
+    for row in load_csv_rows(
+        SEED_URLS_PATH
+    ):
+
+        file_name = clean(
+            row.get("file_name")
+        )
+
+        if not file_name:
+            continue
+
+        existing = metadata.get(
+            file_name,
+            {},
+        )
+
+        metadata[file_name] = {
+            "document_id": (
+                clean(row.get("document_id"))
+                or existing.get(
+                    "document_id",
+                    "",
+                )
+            ),
+            "source": (
+                clean(row.get("source"))
+                or existing.get(
+                    "source",
+                    "",
+                )
+            ),
+            "document_type": (
+                clean(
+                    row.get(
+                        "document_type"
+                    )
+                )
+                or existing.get(
+                    "document_type",
+                    "",
+                )
+            ),
+            "title": (
+                clean(row.get("title"))
+                or existing.get(
+                    "title",
+                    "",
+                )
+            ),
+            "court": (
+                clean(row.get("court"))
+                or existing.get(
+                    "court",
+                    "",
+                )
+            ),
+            "year": (
+                clean(row.get("year"))
+                or existing.get(
+                    "year",
+                    "",
+                )
+            ),
+        }
+
+    return metadata
+
+
+# ============================================================
+# Corpus discovery
+# ============================================================
+
+def discover_pdf_files() -> list[dict]:
+    """
+    Discover PDFs from the actual corpus directories.
+
+    This means:
+
+    20 PDFs    -> 20 discovered
+    100 PDFs   -> 100 discovered
+    1,000 PDFs -> 1,000 discovered
+
+    We no longer depend on manifest row count.
+    """
+
+    discovered = []
+
+    # --------------------------------------------------------
+    # Judgments
+    # --------------------------------------------------------
+
+    if RAW_CASES_DIR.exists():
+
+        for file_path in sorted(
+            RAW_CASES_DIR.rglob("*.pdf")
+        ):
+
+            discovered.append(
+                {
+                    "file_path":
+                        file_path,
+                    "document_type":
+                        "judgment",
+                }
+            )
+
+    # --------------------------------------------------------
+    # Statutes
+    # --------------------------------------------------------
+
+    if RAW_STATUTES_DIR.exists():
+
+        for file_path in sorted(
+            RAW_STATUTES_DIR.rglob("*.pdf")
+        ):
+
+            discovered.append(
+                {
+                    "file_path":
+                        file_path,
+                    "document_type":
+                        "statute",
+                }
+            )
+
+    return discovered
+
+
+# ============================================================
+# PDF validation
+# ============================================================
+
+def looks_like_html(
+    file_path: Path,
+) -> bool:
+
     try:
-        sample = file_path.read_bytes()[:500].lower()
-        return b"<html" in sample or b"<!doctype html" in sample
+
+        with file_path.open(
+            "rb"
+        ) as file:
+
+            sample = (
+                file.read(1000)
+                .lower()
+            )
+
+        return (
+            b"<html" in sample
+            or
+            b"<!doctype html" in sample
+        )
+
     except Exception:
         return False
 
 
-def validate_pdf(file_path: Path) -> dict:
+def has_pdf_signature(
+    file_path: Path,
+) -> bool:
+
+    try:
+
+        with file_path.open(
+            "rb"
+        ) as file:
+
+            header = file.read(5)
+
+        return header.startswith(
+            b"%PDF"
+        )
+
+    except Exception:
+        return False
+
+
+def validate_pdf(
+    file_path: Path,
+) -> dict:
+
     result = {
         "file_exists": False,
         "file_size": 0,
@@ -44,41 +303,119 @@ def validate_pdf(file_path: Path) -> dict:
     }
 
     try:
+
+        # ----------------------------------------------------
+        # Exists
+        # ----------------------------------------------------
+
         if not file_path.exists():
-            result["error"] = "file_not_found"
+
+            result["error"] = (
+                "file_not_found"
+            )
+
             return result
 
         result["file_exists"] = True
-        result["file_size"] = file_path.stat().st_size
 
-        if result["file_size"] == 0:
-            result["error"] = "empty_file"
+        # ----------------------------------------------------
+        # Size
+        # ----------------------------------------------------
+
+        result["file_size"] = (
+            file_path.stat().st_size
+        )
+
+        if result["file_size"] <= 0:
+
+            result["error"] = (
+                "empty_file"
+            )
+
             return result
 
-        result["is_html_saved_as_pdf"] = looks_like_html(file_path)
+        # ----------------------------------------------------
+        # HTML accidentally saved as PDF
+        # ----------------------------------------------------
 
-        if result["is_html_saved_as_pdf"]:
-            result["error"] = "html_saved_as_pdf"
+        result[
+            "is_html_saved_as_pdf"
+        ] = looks_like_html(
+            file_path
+        )
+
+        if result[
+            "is_html_saved_as_pdf"
+        ]:
+
+            result["error"] = (
+                "html_saved_as_pdf"
+            )
+
             return result
 
-        with fitz.open(file_path) as document:
-            result["page_count"] = document.page_count
+        # ----------------------------------------------------
+        # PDF magic bytes
+        # ----------------------------------------------------
 
-            if document.page_count <= 0:
-                result["error"] = "zero_pages"
+        if not has_pdf_signature(
+            file_path
+        ):
+
+            result["error"] = (
+                "invalid_pdf_header"
+            )
+
+            return result
+
+        # ----------------------------------------------------
+        # PyMuPDF structural check
+        # ----------------------------------------------------
+
+        with fitz.open(
+            file_path
+        ) as document:
+
+            result["page_count"] = (
+                document.page_count
+            )
+
+            if (
+                document.page_count
+                <= 0
+            ):
+
+                result["error"] = (
+                    "zero_pages"
+                )
+
                 return result
 
-            result["is_valid_pdf"] = True
-            result["error"] = ""
+        result["is_valid_pdf"] = True
+        result["error"] = ""
 
     except Exception as error:
-        result["error"] = str(error)
+
+        result["error"] = (
+            f"pdf_open_error: {error}"
+        )
 
     return result
 
 
-def write_report(rows: list[dict], output_path: Path) -> None:
-    output_path.parent.mkdir(parents=True, exist_ok=True)
+# ============================================================
+# Report
+# ============================================================
+
+def write_report(
+    rows: list[dict],
+    output_path: Path,
+) -> None:
+
+    output_path.parent.mkdir(
+        parents=True,
+        exist_ok=True,
+    )
 
     fieldnames = [
         "document_id",
@@ -97,66 +434,267 @@ def write_report(rows: list[dict], output_path: Path) -> None:
         "error",
     ]
 
-    with output_path.open("w", encoding="utf-8", newline="") as file:
-        writer = csv.DictWriter(file, fieldnames=fieldnames)
+    with output_path.open(
+        "w",
+        encoding="utf-8",
+        newline="",
+    ) as file:
+
+        writer = csv.DictWriter(
+            file,
+            fieldnames=fieldnames,
+        )
+
         writer.writeheader()
 
-        for row in rows:
-            writer.writerow(row)
+        writer.writerows(
+            rows
+        )
 
+
+# ============================================================
+# Main integrity pipeline
+# ============================================================
 
 def main() -> None:
-    if not MANIFEST_PATH.exists():
-        raise FileNotFoundError(f"Manifest not found: {MANIFEST_PATH}")
 
-    manifest = pd.read_csv(MANIFEST_PATH)
+    metadata_index = (
+        build_metadata_index()
+    )
+
+    discovered_files = (
+        discover_pdf_files()
+    )
+
     report_rows = []
 
-    for _, row in manifest.iterrows():
-        document_type = str(row["document_type"])
-        file_name = str(row["file_name"])
-        file_path = get_file_path(document_type, file_name)
+    for item in discovered_files:
 
-        validation = validate_pdf(file_path)
+        file_path = item[
+            "file_path"
+        ]
+
+        file_name = (
+            file_path.name
+        )
+
+        document_type = item[
+            "document_type"
+        ]
+
+        metadata = (
+            metadata_index.get(
+                file_name,
+                {},
+            )
+        )
+
+        document_id = (
+            metadata.get(
+                "document_id"
+            )
+            or file_path.stem
+        )
+
+        source = (
+            metadata.get(
+                "source"
+            )
+            or "local"
+        )
+
+        title = (
+            metadata.get(
+                "title"
+            )
+            or file_path.stem
+        )
+
+        court = (
+            metadata.get(
+                "court"
+            )
+            or ""
+        )
+
+        year = (
+            metadata.get(
+                "year"
+            )
+            or ""
+        )
+
+        # Prefer explicit metadata type,
+        # otherwise use directory-derived type.
+        document_type = (
+            metadata.get(
+                "document_type"
+            )
+            or document_type
+        )
+
+        validation = validate_pdf(
+            file_path
+        )
 
         report_rows.append(
             {
-                "document_id": row["document_id"],
-                "source": row["source"],
-                "document_type": document_type,
-                "title": row["title"],
-                "court": row["court"],
-                "year": row["year"],
-                "file_name": file_name,
-                "file_path": str(file_path),
+                "document_id":
+                    document_id,
+
+                "source":
+                    source,
+
+                "document_type":
+                    document_type,
+
+                "title":
+                    title,
+
+                "court":
+                    court,
+
+                "year":
+                    year,
+
+                "file_name":
+                    file_name,
+
+                "file_path":
+                    str(file_path),
+
                 **validation,
             }
         )
 
-    write_report(report_rows, PDF_INTEGRITY_REPORT_PATH)
+    # --------------------------------------------------------
+    # Save integrity report
+    # --------------------------------------------------------
 
-    total = len(report_rows)
-    valid = sum(1 for row in report_rows if row["is_valid_pdf"])
-    invalid = total - valid
+    write_report(
+        report_rows,
+        PDF_INTEGRITY_REPORT_PATH,
+    )
 
-    print("\nGap 37 PDF Integrity Check Report")
+    # --------------------------------------------------------
+    # Statistics
+    # --------------------------------------------------------
+
+    total = len(
+        report_rows
+    )
+
+    valid = sum(
+        1
+        for row in report_rows
+        if row["is_valid_pdf"]
+    )
+
+    invalid = (
+        total - valid
+    )
+
+    judgments = sum(
+        1
+        for row in report_rows
+        if str(
+            row["document_type"]
+        ).lower()
+        == "judgment"
+    )
+
+    statutes = sum(
+        1
+        for row in report_rows
+        if str(
+            row["document_type"]
+        ).lower()
+        == "statute"
+    )
+
+    total_pages = sum(
+        int(
+            row["page_count"]
+            or 0
+        )
+        for row in report_rows
+        if row["is_valid_pdf"]
+    )
+
+    # --------------------------------------------------------
+    # Output
+    # --------------------------------------------------------
+
+    print(
+        "\nGap 37 PDF Integrity Check Report"
+    )
+
     print("=" * 70)
-    print(f"Total files checked: {total}")
-    print(f"Valid PDFs: {valid}")
-    print(f"Invalid PDFs: {invalid}")
-    print(f"Report saved to: {PDF_INTEGRITY_REPORT_PATH}")
+
+    print(
+        f"Total files checked: "
+        f"{total}"
+    )
+
+    print(
+        f"Judgment PDFs: "
+        f"{judgments}"
+    )
+
+    print(
+        f"Statute PDFs: "
+        f"{statutes}"
+    )
+
+    print(
+        f"Valid PDFs: "
+        f"{valid}"
+    )
+
+    print(
+        f"Invalid PDFs: "
+        f"{invalid}"
+    )
+
+    print(
+        f"Total valid pages: "
+        f"{total_pages}"
+    )
+
+    print(
+        f"Report saved to: "
+        f"{PDF_INTEGRITY_REPORT_PATH}"
+    )
+
     print("=" * 70)
 
     for row in report_rows:
-        status = "VALID" if row["is_valid_pdf"] else "INVALID"
+
+        status = (
+            "VALID"
+            if row[
+                "is_valid_pdf"
+            ]
+            else "INVALID"
+        )
+
         print(
-            f"{row['document_id']} | {status} | "
+            f"{row['document_id']} | "
+            f"{status} | "
             f"pages={row['page_count']} | "
             f"size={row['file_size']} | "
             f"error={row['error']}"
         )
 
-    print("\nStarting Gap 36 Duplicate Detection after Gap 37...")
+    # --------------------------------------------------------
+    # Existing chained pipeline
+    # --------------------------------------------------------
+
+    print(
+        "\nStarting Gap 36 Duplicate "
+        "Detection after Gap 37..."
+    )
+
     print("=" * 70)
 
     run_duplicate_detection()
