@@ -51,6 +51,9 @@ data/raw/backups/
 # Generated local corpus snapshots
 data/raw/corpus_versions/
 
+# Generated processed corpus
+data/processed/
+
 # ---------------------------------------------------------
 # Frequently changing ingestion state
 # ---------------------------------------------------------
