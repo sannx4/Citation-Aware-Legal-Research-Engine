@@ -18,6 +18,41 @@ An AI-powered legal research engine that retrieves, ranks, explains, and summari
 
 ---
 
+## Corpus Ingestion Milestone
+
+The ingestion pipeline has been hardened against real eCourts judgments.
+
+Current validated corpus:
+
+- 61 downloaded judgment records
+- 56 canonical unique judgments
+- 5 duplicate/common-judgment records
+- 0 invalid PDFs
+- 1,288 canonical pages
+- 17 courts represented
+- 12 case years represented
+
+Implemented capabilities:
+
+- Human-assisted eCourts acquisition
+- Persistent and resumable document IDs
+- PDF integrity validation
+- SHA-256 duplicate detection
+- Common-judgment handling
+- Incremental file hash tracking
+- Court and case-year metadata backfill
+- Canonical corpus registry
+- Corpus statistics
+- Corpus version snapshots
+
+### Operational constraint
+
+eCourts CAPTCHA/session controls make unattended bulk crawling impractical.
+
+The downloader is therefore designed as a human-assisted ingestion workflow, with
+a recommended maximum of approximately 50 successful PDF downloads per browser
+session before starting a fresh verified session.
+
 ## Key Features
 
 * **Legal document ingestion pipeline** for Indian court judgments and statute-related sources.
