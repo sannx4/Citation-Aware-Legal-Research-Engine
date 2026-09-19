@@ -34,7 +34,7 @@ REPORT_PATH = (
 )
 
 
-DETECTOR_VERSION = "1.4.0"
+DETECTOR_VERSION = "1.6.0"
 
 
 # ============================================================
@@ -113,6 +113,11 @@ CASE_NAME_PATTERN = re.compile(
         |
         \s+\d{4}\s+(?:INSC|SCC|AIR)\b
         |
+        \s+\(?\d{4}\)?\s+
+        Supp\.?\s*
+        \(\s*\d+\s*\)
+        \s+SCC\b
+        |
         ;
         |
         :
@@ -144,6 +149,30 @@ SCC_PATTERN = re.compile(
 )
 
 
+SCC_SUPP_PATTERN = re.compile(
+    r"""
+    (?<!\d)
+    \(?
+    (?P<year>\d{4})
+    \)?
+    \s+
+    Supp\.?
+    \s*
+    \(
+    \s*
+    (?P<volume>\d+)
+    \s*
+    \)
+    \s+
+    SCC
+    \s+
+    (?P<page>\d+)
+    \b
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+
 SCC_ONLINE_PATTERN = re.compile(
     r"""
     \b
@@ -168,7 +197,7 @@ AIR_PATTERN = re.compile(
     \s+
     (?P<year>\d{4})
     \s+
-    (?P<court>[A-Z]{2,8})
+    (?P<court>[A-Z&]{2,12})
     \s+
     (?P<page>\d+)
     \b
@@ -540,6 +569,7 @@ TREATMENT_PRIORITY = {
 
 PARTY_CUE_PATTERNS = (
     r"\blearned counsel\b",
+    r"\blearned senior counsel\b",
     r"\bcounsel for the petitioner\b",
     r"\bcounsel for the respondent\b",
     r"\bcounsel for the appellant\b",
@@ -664,7 +694,9 @@ def read_jsonl(
             f"JSONL file not found: {path}"
         )
 
-    rows: list[dict[str, Any]] = []
+    rows: list[
+        dict[str, Any]
+    ] = []
 
     with path.open(
         "r",
@@ -679,7 +711,9 @@ def read_jsonl(
                 continue
 
             rows.append(
-                json.loads(line)
+                json.loads(
+                    line
+                )
             )
 
     return rows
@@ -708,7 +742,10 @@ def write_jsonl(
                     ensure_ascii=False,
                 )
             )
-            file.write("\n")
+
+            file.write(
+                "\n"
+            )
 
 
 # ============================================================
@@ -728,6 +765,10 @@ def split_sentences(
 
     if not text:
         return []
+
+    # --------------------------------------------------------
+    # Protect case-name connectors
+    # --------------------------------------------------------
 
     protected = re.sub(
         r"""
@@ -754,6 +795,10 @@ def split_sentences(
         protected,
         flags=re.IGNORECASE | re.VERBOSE,
     )
+
+    # --------------------------------------------------------
+    # Protect common legal abbreviations
+    # --------------------------------------------------------
 
     abbreviation_map = {
         "S.C.": "S<DOT>C<DOT>",
@@ -788,6 +833,10 @@ def split_sentences(
             flags=re.IGNORECASE,
         )
 
+    # --------------------------------------------------------
+    # Split sentence boundaries
+    # --------------------------------------------------------
+
     parts = re.split(
         r"""
         (?<=[?!])
@@ -801,7 +850,9 @@ def split_sentences(
         flags=re.VERBOSE,
     )
 
-    sentences: list[str] = []
+    sentences: list[
+        str
+    ] = []
 
     for part in parts:
 
@@ -820,6 +871,7 @@ def split_sentences(
         )
 
         if len(part) >= 20:
+
             sentences.append(
                 part
             )
@@ -853,24 +905,66 @@ def clean_case_left_party(
     )
 
     introducer_patterns = (
+
+        # ----------------------------------------------------
+        # Decision / judgment introductions
+        # ----------------------------------------------------
+
         r"^.*\bin view of the decision in\s+",
         r"^.*\bin view of the judgment in\s+",
 
         r"^.*\bfollowing the decision in\s+",
         r"^.*\bfollowing the judgment in\s+",
 
+        # ----------------------------------------------------
+        # Reliance language
+        # ----------------------------------------------------
+
         r"^.*\breliance was placed on\s+",
+        r"^.*\breliance was placed upon\s+",
+
         r"^.*\breliance has been placed on\s+",
+        r"^.*\breliance has been placed upon\s+",
+
         r"^.*\breliance is placed on\s+",
+        r"^.*\breliance is placed upon\s+",
+
         r"^.*\bplaced reliance on\s+",
+        r"^.*\bplaced reliance upon\s+",
+
         r"^.*\bplaces reliance on\s+",
+        r"^.*\bplaces reliance upon\s+",
+
         r"^.*\brelied upon\s+",
         r"^.*\brelied on\s+",
+
         r"^.*\brelying upon\s+",
         r"^.*\brelying on\s+",
 
+        # ----------------------------------------------------
+        # Principle/test language
+        # ----------------------------------------------------
+
         r"^.*\bthe hallowed principle in\s+",
         r"^.*\bthe principle in\s+",
+
+        r"^.*\btest enunciated in\s+",
+        r"^.*\btest laid down in\s+",
+
+        r"^.*\bprinciple enunciated in\s+",
+        r"^.*\bprinciple laid down in\s+",
+
+        r"^.*\blaw laid down in\s+",
+
+        # ----------------------------------------------------
+        # Multiple authorities
+        # ----------------------------------------------------
+
+        r"^.*\bsupra and\s+",
+
+        # ----------------------------------------------------
+        # Generic decision/judgment wording
+        # ----------------------------------------------------
 
         r"^.*\bthe decision in\s+",
         r"^.*\bdecision in\s+",
@@ -881,8 +975,35 @@ def clean_case_left_party(
         r"^.*\bthe case of\s+",
         r"^.*\bcase of\s+",
 
+        # ----------------------------------------------------
+        # Authoritative-court wording
+        # ----------------------------------------------------
+
+        (
+            r"^.*\bauthoritative judgment "
+            r"rendered by "
+            r"(?:the\s+)?"
+            r"(?:Apex|Supreme|High) Court in\s+"
+        ),
+
+        (
+            r"^.*\bjudgment rendered by "
+            r"(?:the\s+)?"
+            r"(?:Apex|Supreme|High) Court in\s+"
+        ),
+
+        r"^.*\bjudgment of this court in\s+",
+        r"^.*\bjudgment of the court in\s+",
+
+        # ----------------------------------------------------
+        # Other introducers
+        # ----------------------------------------------------
+
         r"^.*\bhighlighted recently in\s+",
         r"^.*\bhighlighted in\s+",
+
+        r"^.*\badverted to\s+",
+        r"^.*\badverts to\s+",
 
         r"^.*\breferred to\s+",
         r"^.*\breference was made to\s+",
@@ -902,6 +1023,7 @@ def clean_case_left_party(
         ).strip()
 
         if cleaned != value:
+
             value = cleaned
             break
 
@@ -944,7 +1066,9 @@ def extract_case_names(
     text: str,
 ) -> list[str]:
 
-    citations: list[str] = []
+    citations: list[
+        str
+    ] = []
 
     for match in CASE_NAME_PATTERN.finditer(
         text
@@ -1000,10 +1124,13 @@ def extract_reporter_citations(
     text: str,
 ) -> list[str]:
 
-    citations: list[str] = []
+    citations: list[
+        str
+    ] = []
 
     for pattern in (
         SCC_PATTERN,
+        SCC_SUPP_PATTERN,
         SCC_ONLINE_PATTERN,
         AIR_PATTERN,
         INSC_PATTERN,
@@ -1026,7 +1153,9 @@ def extract_citation_mentions(
     text: str,
 ) -> list[str]:
 
-    mentions: list[str] = []
+    mentions: list[
+        str
+    ] = []
 
     mentions.extend(
         extract_case_names(
@@ -1040,8 +1169,13 @@ def extract_citation_mentions(
         )
     )
 
-    seen: set[str] = set()
-    unique: list[str] = []
+    seen: set[
+        str
+    ] = set()
+
+    unique: list[
+        str
+    ] = []
 
     for mention in mentions:
 
@@ -1066,6 +1200,69 @@ def extract_citation_mentions(
 # ============================================================
 # Treatment signal extraction
 # ============================================================
+
+def is_negated_reliance(
+    text: str,
+    match_start: int,
+) -> bool:
+    """
+    Reject evidentiary / negative constructions such as:
+
+        cannot be relied upon
+        could not be relied on
+        should not be relied upon
+        would not be relied on
+        must not be relied upon
+        may not be relied on
+        not be relied upon
+
+    These phrases do not mean that the cited precedent itself was
+    RELIED_ON.
+    """
+
+    prefix = text[
+        max(
+            0,
+            match_start - 60,
+        ):
+        match_start
+    ]
+
+    return bool(
+        re.search(
+            r"""
+            \b
+            (?:
+                cannot
+                |
+                can't
+                |
+                could\s+not
+                |
+                should\s+not
+                |
+                would\s+not
+                |
+                must\s+not
+                |
+                may\s+not
+                |
+                shall\s+not
+                |
+                not
+            )
+            \s+
+            (?:be\s+)?
+            $
+            """,
+            prefix,
+            flags=(
+                re.IGNORECASE
+                | re.VERBOSE
+            ),
+        )
+    )
+
 
 def find_treatment_signal(
     text: str,
@@ -1097,6 +1294,21 @@ def find_treatment_signal(
             )
 
             if not match:
+                continue
+
+            # ------------------------------------------------
+            # Do not interpret negative evidentiary language
+            # such as "cannot be relied upon" as precedent
+            # reliance.
+            # ------------------------------------------------
+
+            if (
+                label == "RELIED_ON"
+                and is_negated_reliance(
+                    text,
+                    match.start(),
+                )
+            ):
                 continue
 
             candidates.append(
@@ -1145,15 +1357,20 @@ def resolve_treatment(
     str,
 ]:
     """
-    Resolve treatment with citation-local semantics.
+    Resolve treatment using citation-local context.
 
     Priority:
-        1. Citation's own sentence
+
+        1. Citation sentence itself
         2. Previous sentence only when it clearly introduces
-           following authorities
-        3. Next sentence only when it refers back anaphorically
-        4. Neutral REFERRED_TO fallback
+           the cited authorities
+        3. Next sentence only when it clearly refers back
+        4. REFERRED_TO neutral fallback
     """
+
+    # --------------------------------------------------------
+    # Direct sentence
+    # --------------------------------------------------------
 
     direct = find_treatment_signal(
         sentence
@@ -1171,6 +1388,10 @@ def resolve_treatment(
             trigger,
             "DIRECT_SENTENCE",
         )
+
+    # --------------------------------------------------------
+    # Previous-sentence bridge
+    # --------------------------------------------------------
 
     previous_signal = (
         find_treatment_signal(
@@ -1202,6 +1423,10 @@ def resolve_treatment(
             "PREVIOUS_SENTENCE",
         )
 
+    # --------------------------------------------------------
+    # Next-sentence anaphora
+    # --------------------------------------------------------
+
     next_signal = (
         find_treatment_signal(
             next_sentence
@@ -1232,6 +1457,10 @@ def resolve_treatment(
             "NEXT_SENTENCE",
         )
 
+    # --------------------------------------------------------
+    # Conservative default
+    # --------------------------------------------------------
+
     return (
         "REFERRED_TO",
         0.50,
@@ -1249,6 +1478,10 @@ def quoted_authority_context(
     previous_sentence: str,
 ) -> bool:
 
+    # --------------------------------------------------------
+    # Explicit quotation
+    # --------------------------------------------------------
+
     if sentence.lstrip().startswith(
         (
             '"',
@@ -1262,11 +1495,19 @@ def quoted_authority_context(
     if not previous_sentence:
         return False
 
+    # --------------------------------------------------------
+    # Previous sentence must introduce quoted material
+    # --------------------------------------------------------
+
     if not matches_any(
         previous_sentence,
         QUOTE_INTRO_PATTERNS,
     ):
         return False
+
+    # --------------------------------------------------------
+    # Previous sentence should also identify an authority
+    # --------------------------------------------------------
 
     has_authority_reference = bool(
         extract_citation_mentions(
@@ -1319,6 +1560,7 @@ def infer_treatment_actor(
         sentence,
         previous_sentence,
     ):
+
         return "QUOTED_AUTHORITY"
 
     # --------------------------------------------------------
@@ -1329,10 +1571,13 @@ def infer_treatment_actor(
         sentence,
         PARTY_CUE_PATTERNS,
     ):
+
         return "PARTY"
 
-    # ARGUMENTS section is generally party material unless
-    # strong court language shows otherwise.
+    # --------------------------------------------------------
+    # ARGUMENTS generally represents party material
+    # --------------------------------------------------------
+
     if (
         section_type == "ARGUMENTS"
         and not matches_any(
@@ -1340,10 +1585,14 @@ def infer_treatment_actor(
             COURT_CUE_PATTERNS,
         )
     ):
+
         return "PARTY"
 
-    # Passive reliance language usually reflects submissions
-    # unless the court expressly adopts it.
+    # --------------------------------------------------------
+    # Passive reliance normally reflects submissions unless
+    # current-court language explicitly adopts the authority.
+    # --------------------------------------------------------
+
     if (
         treatment == "RELIED_ON"
         and trigger.lower()
@@ -1355,12 +1604,15 @@ def infer_treatment_actor(
             "places reliance on",
             "relying on",
             "relying upon",
+            "relied on",
+            "relied upon",
         }
         and not matches_any(
             sentence,
             COURT_CUE_PATTERNS,
         )
     ):
+
         return "PARTY"
 
     # --------------------------------------------------------
@@ -1371,10 +1623,13 @@ def infer_treatment_actor(
         sentence,
         COURT_CUE_PATTERNS,
     ):
+
         return "COURT"
 
-    # Strong treatment inside court-analysis sections is
-    # provisionally attributed to the current court.
+    # --------------------------------------------------------
+    # Strong treatment in court-analysis sections
+    # --------------------------------------------------------
+
     if (
         section_type
         in {
@@ -1385,6 +1640,7 @@ def infer_treatment_actor(
         and treatment
         in STRONG_TREATMENTS
     ):
+
         return "COURT"
 
     return "UNKNOWN"
@@ -1468,6 +1724,66 @@ def citation_contexts(
 
 
 # ============================================================
+# Citation-local treatment window
+# ============================================================
+
+def citation_local_window(
+    sentence: str,
+    citation_text: str,
+    radius: int = 140,
+) -> str:
+    """
+    Return a bounded piece of the sentence around one citation.
+
+    This prevents a treatment phrase that refers to a different
+    proposition, piece of evidence, or another citation elsewhere
+    in the same sentence from being copied to every citation in
+    that sentence.
+    """
+
+    if not sentence:
+        return ""
+
+    if not citation_text:
+        return sentence
+
+    normalized_sentence = (
+        sentence.lower()
+    )
+
+    normalized_citation = (
+        citation_text.lower()
+    )
+
+    start = normalized_sentence.find(
+        normalized_citation
+    )
+
+    if start < 0:
+        return sentence
+
+    end = (
+        start
+        + len(citation_text)
+    )
+
+    window_start = max(
+        0,
+        start - radius,
+    )
+
+    window_end = min(
+        len(sentence),
+        end + radius,
+    )
+
+    return sentence[
+        window_start:
+        window_end
+    ]
+
+
+# ============================================================
 # Chunk processing
 # ============================================================
 
@@ -1512,34 +1828,46 @@ def process_chunk(
         mentions,
     ) in contexts:
 
-        (
-            treatment,
-            confidence,
-            trigger,
-            treatment_scope,
-        ) = resolve_treatment(
-            citation_sentence,
-            previous_sentence,
-            next_sentence,
-        )
-
-        actor = infer_treatment_actor(
-            section_type=section_type,
-            sentence=citation_sentence,
-            previous_sentence=(
-                previous_sentence
-            ),
-            treatment=treatment,
-            trigger=trigger,
-        )
-
-        is_judicial_treatment = (
-            actor == "COURT"
-            and treatment
-            in STRONG_TREATMENTS
-        )
-
         for citation_text in mentions:
+
+            # ------------------------------------------------
+            # Treatment is resolved for this citation mention,
+            # not once for the whole sentence.
+            # ------------------------------------------------
+
+            local_sentence = (
+                citation_local_window(
+                    citation_sentence,
+                    citation_text,
+                )
+            )
+
+            (
+                treatment,
+                confidence,
+                trigger,
+                treatment_scope,
+            ) = resolve_treatment(
+                local_sentence,
+                previous_sentence,
+                next_sentence,
+            )
+
+            actor = infer_treatment_actor(
+                section_type=section_type,
+                sentence=citation_sentence,
+                previous_sentence=(
+                    previous_sentence
+                ),
+                treatment=treatment,
+                trigger=trigger,
+            )
+
+            is_judicial_treatment = (
+                actor == "COURT"
+                and treatment
+                in STRONG_TREATMENTS
+            )
 
             local_counter += 1
 
@@ -1751,10 +2079,14 @@ def deduplicate_treatments(
 
         if existing is None:
 
-            best[key] = row
+            best[
+                key
+            ] = row
+
             order.append(
                 key
             )
+
             continue
 
         if float(
@@ -1768,11 +2100,17 @@ def deduplicate_treatments(
                 0.0,
             )
         ):
-            best[key] = row
+
+            best[
+                key
+            ] = row
 
     return [
-        best[key]
-        for key in order
+        best[
+            key
+        ]
+        for key
+        in order
     ]
 
 
@@ -1826,6 +2164,7 @@ def write_report(
         )
 
         if document_id not in grouped:
+
             grouped[
                 document_id
             ] = Counter()
@@ -1866,6 +2205,7 @@ def write_report(
                 False,
             )
         ):
+
             counts[
                 "judicial_treatments"
             ] += 1
@@ -1949,9 +2289,11 @@ def filter_chunks(
             )
 
     if limit is None:
+
         return chunks
 
     if limit <= 0:
+
         raise ValueError(
             "--limit must be greater "
             "than zero"
@@ -1992,6 +2334,7 @@ def filter_chunks(
             )
 
         if doc_id in selected_documents:
+
             filtered_chunks.append(
                 chunk
             )
@@ -2014,10 +2357,15 @@ def run_detection(
         <= min_confidence
         <= 1.0
     ):
+
         raise ValueError(
             "--min-confidence must be "
             "between 0.0 and 1.0"
         )
+
+    # --------------------------------------------------------
+    # Load legal chunks
+    # --------------------------------------------------------
 
     chunks = read_jsonl(
         LEGAL_CHUNKS_PATH
@@ -2045,9 +2393,11 @@ def run_detection(
     )
 
     print()
+
     print(
         "Citation Treatment Detection"
     )
+
     print("=" * 70)
 
     print(
@@ -2077,7 +2427,12 @@ def run_detection(
     ] = []
 
     raw_detection_count = 0
+
     duplicate_count = 0
+
+    # --------------------------------------------------------
+    # Process each judgment independently
+    # --------------------------------------------------------
 
     for index, doc_id in enumerate(
         documents,
@@ -2119,8 +2474,12 @@ def run_detection(
         )
 
         duplicates_removed = (
-            len(raw_rows)
-            - len(document_rows)
+            len(
+                raw_rows
+            )
+            - len(
+                document_rows
+            )
         )
 
         duplicate_count += (
@@ -2144,13 +2503,19 @@ def run_detection(
         )
 
         treatment_counts = Counter(
-            row["treatment"]
-            for row in document_rows
+            row[
+                "treatment"
+            ]
+            for row
+            in document_rows
         )
 
         actor_counts = Counter(
-            row["treatment_actor"]
-            for row in document_rows
+            row[
+                "treatment_actor"
+            ]
+            for row
+            in document_rows
         )
 
         judicial_count = sum(
@@ -2180,6 +2545,10 @@ def run_detection(
             f"{treatment_counts.get('RELIED_ON', 0)}"
         )
 
+    # --------------------------------------------------------
+    # Write outputs
+    # --------------------------------------------------------
+
     write_jsonl(
         TREATMENTS_PATH,
         treatments,
@@ -2188,6 +2557,10 @@ def run_detection(
     write_report(
         treatments
     )
+
+    # --------------------------------------------------------
+    # Corpus totals
+    # --------------------------------------------------------
 
     total_treatments = Counter(
         row[
@@ -2217,13 +2590,20 @@ def run_detection(
         row[
             "treatment"
         ]
-        for row in judicial_rows
+        for row
+        in judicial_rows
     )
 
+    # --------------------------------------------------------
+    # Console report
+    # --------------------------------------------------------
+
     print()
+
     print(
         "Citation Treatment Report"
     )
+
     print("=" * 70)
 
     print(
@@ -2256,9 +2636,11 @@ def run_detection(
         )
 
     print()
+
     print(
         "Treatment actors"
     )
+
     print("-" * 70)
 
     for actor in TREATMENT_ACTORS:
@@ -2269,6 +2651,7 @@ def run_detection(
         )
 
     print()
+
     print(
         f"Judicial non-neutral treatments: "
         f"{len(judicial_rows)}"
@@ -2289,6 +2672,10 @@ def run_detection(
             f"{judicial_labels.get(label, 0)}"
         )
 
+    # --------------------------------------------------------
+    # Canonical targets are intentionally unresolved here
+    # --------------------------------------------------------
+
     unresolved = sum(
         1
         for row in treatments
@@ -2298,6 +2685,7 @@ def run_detection(
     )
 
     print()
+
     print(
         f"Canonical targets unresolved: "
         f"{unresolved}"
@@ -2379,10 +2767,12 @@ def main() -> None:
     except Exception as exc:
 
         print()
+
         print(
             "Citation treatment "
             "detection failed"
         )
+
         print("=" * 70)
 
         print(
@@ -2392,7 +2782,9 @@ def main() -> None:
 
         print("=" * 70)
 
-        sys.exit(1)
+        sys.exit(
+            1
+        )
 
 
 if __name__ == "__main__":
