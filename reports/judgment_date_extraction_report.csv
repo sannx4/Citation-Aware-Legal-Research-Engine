@@ -1,0 +1,11 @@
+metric,value
+date_extractor_version,1.0.2
+documents_processed,56
+exact_dates_extracted,56
+missing_dates,0
+document_text_dates,48
+source_url_fallback_dates,8
+needs_review,8
+text_url_agreements,48
+text_url_disagreements,0
+metadata_year_differs_from_decision_year,31
