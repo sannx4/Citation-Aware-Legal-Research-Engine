@@ -1,0 +1,16 @@
+metric,value
+resolver_version,1.4.1
+documents_processed,45
+citation_mentions,1138
+resolved_mentions,1138
+unresolved_mentions,0
+unique_canonical_authorities,664
+unique_aliases,823
+aliases_merged,159
+case_name_plus_reporter,116
+case_name_only,292
+reporter_only,256
+raw_only,0
+ambiguous_multi_case_events,38
+authorities_needing_review,3
+local_corpus_matches,0
