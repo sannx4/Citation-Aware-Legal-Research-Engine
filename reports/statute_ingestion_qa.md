@@ -10,8 +10,8 @@ Version: `1.0.0`
 - **failed_documents**: 0
 - **good_quality_documents**: 8
 - **review_documents**: 0
-- **total_characters**: 4051821
-- **total_words**: 654137
+- **total_characters**: 3974860
+- **total_words**: 644356
 
 ## Failed manifest rows
 
